@@ -1,0 +1,16 @@
+Реализовать калькулятор, поддерживающий операции сложения и вычитания для двух аргументов.
+Приложение должно предоставлять REST API:
+http://127.0.0.1:8080/calculator
+GET
+Query params:
+- arg0 int - первый аргумент
+- arg1 int - второй аргумент
+- operation string - операция (PLUS или MINUS)
+
+
+Пример.
+Запрос: GET http://127.0.0.1:8080/calculator?arg0=1&arg1=2&operation=PLUS
+Ответ: 3
+
+Запрос: GET http://127.0.0.1:8080/calculator?arg0=3&arg1=2&operation=MINUS
+Ответ: 1
