@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  battle-test-app:
+    build:
+      context: .
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "spring": {
+        "data": {
+          "mongodb": {
+            "uri": "mongodb://db:27017",
+            "database": "alfa-battle"
+          }
+        }
+      },
+      "server": {
+        "port": 8080
+      },
+      "coefficient": 80,
+      "mapping": {
+        "taskPorts": {
+          "1": 8080
+        },
+        "taskNames": {
+          "1": "com.soypita.battle.testcases.FirstTest"
+        }
+      }
+    }'
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  db:
+    image: mongo
+    volumes:
+      - ./database:/data
+    ports:
+      - "27017:27017"
