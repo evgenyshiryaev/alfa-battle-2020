@@ -1,0 +1,26 @@
+spring:
+  main:
+    allow-bean-definition-overriding:           true
+  kafka:
+    streams:
+      application-id:                           payment-analytics-api
+      client-id:                                payment-analytics-api
+      bootstrap-servers:                        kafka1:9092
+      properties:
+        metrics.recording.level:                DEBUG
+        processing.guarantee:                   at_least_once
+        auto.offset.reset:                      earliest
+        cache.max.bytes.buffering:              10240
+        commit.interval.ms:                     60000
+        consumer:
+          group-id:                             payment-analytic-consumer
+          max.poll.records:                     30
+
+analytics:
+  kafka:
+    enabled:                                    true
+    sources:
+      rawPaymentSource:                    RAW_PAYMENTS
+    sinks:
+      paymentAnalyticSink:                 PAYMENT_ANALYTICS
+
