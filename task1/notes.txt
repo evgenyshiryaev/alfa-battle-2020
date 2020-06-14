@@ -1,0 +1,16 @@
+https://api.alfabank.ru/node/238
+login: EShiryaev@alfabank.ru
+appication: alfa-battle
+
+Client ID: d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9
+Client Secret: M4dW5sE3nH2gT6bG0qS5vC6sA1wQ0bB6lP1hQ6pD6cX1nO3fQ1
+
+test keys: https://api.alfabank.ru/man_cert_rsa
+
+https://api.alfabank.ru/node/238
+accept: application/json
+x-ibm-client-id: d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9
+
+https://api.alfabank.ru/node/237
+https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service/atms/status
+https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service/atms
