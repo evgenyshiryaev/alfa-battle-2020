@@ -10,8 +10,8 @@ import java.util.Map;
 @ConfigurationProperties("mapping")
 public class TasksProperties {
     @NotNull
-    Map<Integer, String> taskNames;
+    private Map<Integer, String> taskNames;
 
     @NotNull
-    Map<Integer, String> taskPorts;
+    private Map<Integer, String> taskPorts;
 }
