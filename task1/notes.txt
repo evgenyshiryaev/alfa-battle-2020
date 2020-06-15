@@ -6,6 +6,10 @@ Client ID: d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9
 Client Secret: M4dW5sE3nH2gT6bG0qS5vC6sA1wQ0bB6lP1hQ6pD6cX1nO3fQ1
 
 test keys: https://api.alfabank.ru/man_cert_rsa
+keytool -importcert -file apidevelopers.cer -keystore apidevelopers.jks -alias alfabattle
+keytool -importkeystore -srckeystore apidevelopers.jks -destkeystore apidevelopers.p12 -deststoretype pkcs12
+or
+keytool -import -alias alfabattle -file apidevelopers.cer -keystore apidevelopers.p12 -storepass password
 
 https://api.alfabank.ru/node/238
 accept: application/json
