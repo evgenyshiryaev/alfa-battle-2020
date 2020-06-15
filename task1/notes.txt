@@ -1,5 +1,5 @@
 https://api.alfabank.ru/node/238
-login: EShiryaev@alfabank.ru
+EShiryaev@alfabank.ru / 123!@#qweQWE
 appication: alfa-battle
 
 Client ID: d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9
@@ -14,3 +14,6 @@ x-ibm-client-id: d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9
 https://api.alfabank.ru/node/237
 https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service/atms/status
 https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service/atms
+
+generate code
+java -jar openapi-generator-cli-4.3.1.jar generate -i https://api.alfabank.ru/ibm_apim/swaggerjson/YXRtLXNlcnZpY2U6MS4wLjA%2C -g java -o generated
