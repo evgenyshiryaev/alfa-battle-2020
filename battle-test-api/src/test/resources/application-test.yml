@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: alfa-battle
+
+coefficient: 80
+
+mapping:
+  taskPorts:
+    1: 8080
+  taskNames:
+    1: com.soypita.battle.testcases.FirstTest
