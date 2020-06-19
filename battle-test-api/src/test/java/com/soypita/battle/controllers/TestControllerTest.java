@@ -33,10 +33,9 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     @Test
     public void successfullyPerformTestCase() throws Exception {
         // given
-        RunTestRequest req = RunTestRequest.builder()
-                .loginId(BASE_LOGIN_ID)
-                .taskId(TASK_ID)
-                .build();
+        RunTestRequest req = new RunTestRequest();
+        req.setLoginId(BASE_LOGIN_ID);
+        req.setTaskId(TASK_ID);
 
         // expect
         mockMvc.perform(post("/test")
@@ -51,10 +50,9 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     @Test
     public void failedWhenRequestUserNotFound() throws Exception {
         // given
-        RunTestRequest req = RunTestRequest.builder()
-                .loginId(UNKNOWN_LOGIN_ID)
-                .taskId(TASK_ID)
-                .build();
+        RunTestRequest req = new RunTestRequest();
+        req.setLoginId(UNKNOWN_LOGIN_ID);
+        req.setTaskId(TASK_ID);
 
         // expect
         mockMvc.perform(post("/test")
@@ -66,10 +64,9 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     @Test
     public void failedWhenRequestTaskNotFound() throws Exception {
         // given
-        RunTestRequest req = RunTestRequest.builder()
-                .loginId(BASE_LOGIN_ID)
-                .taskId(UNKNOWN_TASK)
-                .build();
+        RunTestRequest req = new RunTestRequest();
+        req.setLoginId(BASE_LOGIN_ID);
+        req.setTaskId(UNKNOWN_TASK);
 
         // expect
         mockMvc.perform(post("/test")
@@ -81,9 +78,8 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     @Test
     public void failedWhenRequestLoginIdIsEmpty() throws Exception {
         // given
-        RunTestRequest req = RunTestRequest.builder()
-                .taskId(UNKNOWN_TASK)
-                .build();
+        RunTestRequest req = new RunTestRequest();
+        req.setTaskId(UNKNOWN_TASK);
 
         // expect
         mockMvc.perform(post("/test")
@@ -95,9 +91,8 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     @Test
     public void failedWhenRequestTaskIdIsEmpty() throws Exception {
         // given
-        RunTestRequest req = RunTestRequest.builder()
-                .loginId(BASE_LOGIN_ID)
-                .build();
+        RunTestRequest req = new RunTestRequest();
+        req.setLoginId(BASE_LOGIN_ID);
 
         // expect
         mockMvc.perform(post("/test")

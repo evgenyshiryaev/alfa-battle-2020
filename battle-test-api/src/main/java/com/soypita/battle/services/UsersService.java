@@ -18,14 +18,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UsersService {
+
     private final ContestUsersRepository contestUsersRepository;
     private final UserResultConverter userResultConverter;
     private final ContestUserConverter contestUserConverter;
+
 
     @SneakyThrows
     public String getUserHost(String loginId) {
         return getUser(loginId).getHost();
     }
+
 
     @SneakyThrows
     public void updateUserResults(String loginId, int taskId, float result) {
@@ -35,21 +38,26 @@ public class UsersService {
 
         if (currentResults == null) {
             currentResults = new HashMap<>();
+            user.setTestResults(currentResults);
         }
+
         currentResults.put(taskId, result);
 
         contestUsersRepository.save(user);
     }
+
 
     public List<UserResult> getAllResults() {
         var results = contestUsersRepository.findAll();
         return results.stream().map(userResultConverter::convert).collect(Collectors.toList());
     }
 
+
     @SneakyThrows
     public UserResult getUserResults(String loginId) {
         return userResultConverter.convert(getUser(loginId));
     }
+
 
     public void addUsers(List<AddUserRequest> request) {
         var contestUsers = request
@@ -59,13 +67,16 @@ public class UsersService {
         contestUsersRepository.saveAll(contestUsers);
     }
 
+
     public void deleteAllUsers() {
         contestUsersRepository.deleteAll();
     }
 
+
     public void deleteUser(String loginId) {
         contestUsersRepository.deleteByLoginId(loginId);
     }
+
 
     private ContestUser getUser(String loginId) {
         var userOpt = contestUsersRepository.findByLoginId(loginId);
@@ -74,4 +85,5 @@ public class UsersService {
         }
         return userOpt.get();
     }
+
 }
