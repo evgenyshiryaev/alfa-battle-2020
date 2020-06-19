@@ -3,9 +3,7 @@ package ru.alfabank.alfabattle.task1;
 import java.io.FileInputStream;
 import java.net.URI;
 import java.security.KeyStore;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
@@ -36,35 +34,31 @@ import ru.alfabank.alfabattle.task1.modeltask.AtmResponseConverter;
 
 @Slf4j
 @RestController("/")
-public class AtmFindController {
+public class AtmController {
 
     private static final String API_ROOT = "https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service";
     private static final String ATMS_API_PATH = API_ROOT + "/atms";
     private static final String ATMS_STATUS_API_PATH = API_ROOT + "/atms/status";
 
+    private static final String CLIENT_ID = "d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9";
+
+
+    @Autowired
+    private AtmService atmService;
 
     @Autowired
     private AtmResponseConverter converter;
 
 
-    private RestTemplate restTemplate;
-    private HttpEntity<?> httpEntity;
-
-    private final  Map<Integer, ATMDetails> atmById = new HashMap<>();
-
-
     @PostConstruct
     void init() throws Exception {
-        restTemplate = getRestTemplate();
-        httpEntity = getHttpEntity();
-
         initAtms();
     }
 
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<AtmResponse> getById(@PathVariable("id") int id) {
-        ATMDetails atm = atmById.get(id);
+        ATMDetails atm = atmService.getById(id);
         return atm != null
                 ? ResponseEntity.ok(converter.convert(atm))
                 : ResponseEntity.notFound().build();
@@ -72,9 +66,10 @@ public class AtmFindController {
 
 
     @GetMapping(value = "/nearest")
-    public ResponseEntity<ATMDetails> getNearestAtm(String latitude, String longitude) {
-        // TODO
-        return null;
+    public ResponseEntity<AtmResponse> getNearestAtm(String latitude, String longitude) {
+        int id = atmService.getNearest(latitude, longitude);
+        ATMDetails atm = atmService.getById(id);
+        return ResponseEntity.ok(converter.convert(atm));
     }
 
 
@@ -103,28 +98,33 @@ public class AtmFindController {
     private static HttpEntity<?> getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("accept", "application/json");
-        headers.add("x-ibm-client-id", "d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9");
+        headers.add("x-ibm-client-id", CLIENT_ID);
 
         return new HttpEntity<>(headers);
     }
 
 
-    private void initAtms() {
+    private void initAtms() throws Exception {
         log.info("Initing ATMs...");
 
         log.info("Loading data...");
+        RestTemplate restTemplate = getRestTemplate();
+        HttpEntity<?> httpEntity = getHttpEntity();
         ResponseEntity<JSONResponseBankATMDetails> atmsResponse = restTemplate.exchange(
                 URI.create(ATMS_API_PATH),
                 HttpMethod.GET, httpEntity, JSONResponseBankATMDetails.class);
         ResponseEntity<JSONResponseBankATMStatus> atmsStatusResponse = restTemplate.exchange(
                 URI.create(ATMS_STATUS_API_PATH),
                 HttpMethod.GET, httpEntity, JSONResponseBankATMStatus.class);
-
-        List<ATMDetails> atms = atmsResponse.getBody().getData().getAtms();
-        List<ATMStatus> atmsStatuses = atmsStatusResponse.getBody().getData().getAtms();
         log.info("Data is loaded");
 
-        atms.forEach(atm -> atmById.put(atm.getDeviceId(), atm));
+        List<ATMDetails> atms = atmsResponse.getBody().getData().getAtms();
+        atmService.setAtms(atms);
+
+        List<ATMStatus> atmStatuses = atmsStatusResponse.getBody().getData().getAtms();
+        atmService.setAtmStatuses(atmStatuses);
+
+        log.info("ATMs are inited");
     }
 
 }
