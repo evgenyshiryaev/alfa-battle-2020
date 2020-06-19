@@ -55,8 +55,9 @@ public class PaymentInfoKStreamBuilder {
                             var currGroupInfo = agg.getAnalyticInfo().getOrDefault(value.getCategoryId(),
                                     new PaymentGroupInfo(BigDecimal.valueOf(Double.MAX_VALUE), BigDecimal.valueOf(Double.MIN_VALUE),
                                             BigDecimal.valueOf(0), 0));
+                            var totalCount = currGroupInfo.getTotalCount() + 1;
                             var resGroupInfo = new PaymentGroupInfo(currGroupInfo.getMin().min(value.getAmount()), currGroupInfo.getMax().max(value.getAmount()),
-                                    currGroupInfo.getSum().add(value.getAmount()), currGroupInfo.getTotalCount() + 1);
+                                    currGroupInfo.getSum().add(value.getAmount()),  totalCount);
                             agg.getAnalyticInfo().put(value.getCategoryId(), resGroupInfo);
                             return agg;
                         }, Materialized.with(Serdes.String(), paymentAnalyticsResultSerde))

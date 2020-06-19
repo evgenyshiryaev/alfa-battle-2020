@@ -17,5 +17,5 @@ public class PaymentGroupInfo {
     private BigDecimal max;
     private BigDecimal sum;
     @JsonIgnore
-    private Integer totalCount;
+    private int totalCount;
 }

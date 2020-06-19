@@ -1,16 +1,14 @@
 ###Анализируй это
 
-Api должен предоставлять следующий Rest интерфейс.
-
-В топике кафки RAW_PAYMENTS находятся данные по платежам пользователей.
+В топике кафки RAW_PAYMENTS находятся данные по платежам пользователей. Брокер доступен по порту 9092.
 
 Формат одной записи представлен ниже:
 
 ```
-payment1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipientId":"XA3SZV", "desc":"Платеж за услуги", "amount":10.0}
+key1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipientId":"XA3SZV", "desc":"Платеж за услуги", "amount":10.0}
 ```
 
-где payment1 - ключ записи.
+где key1 - ключ записи.
 Все остальное после двоеточия является данными по платежу.
 
 Необходимо реализовать следующую логику:
@@ -41,12 +39,32 @@ payment1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipien
 Требуется реализовать логику выделения шаблонов платежей из потока данных. 
 Платеж считается шаблонным по следующим критериям:
 
-- Платеж повторяется три и более раза
-- У платежей совпадают велечина, категория, от кого и кому платеж был проведен
+- У платежей совпадают величина, категория, от кого и кому платеж был проведен (recipientId и userId соответсвенно)
+- Такие платежи повторяется три и более раза
 
 Реализовать интерфейс, по которому можно будет получать шаблоны платежей пользователя. 
 
 ### Ожидаемый интерфейс
+
+Пример данных в топике:
+
+```
+key1:{"ref":"ref1", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_1", "amount":10.0}
+key2:{"ref":"ref2", "categoryId":2, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_2", "amount":350.56}
+key3:{"ref":"ref3", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_3", "amount":700.0}
+key4:{"ref":"ref4", "categoryId":3, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_4", "amount":5.99}
+key5:{"ref":"ref5", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_5", "amount":10.0}
+key6:{"ref":"ref6", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_6", "amount":350.56}
+key7:{"ref":"ref7", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_7", "amount":890.0}
+key8:{"ref":"ref8", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "purpose":"Тестовый платеж_8", "amount":35.99}
+key9:{"ref":"ref9", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_9", "amount":890.0}
+key10:{"ref":"ref10", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "purpose":"Тестовый платеж_10", "amount":35.9910}
+key11:{"ref":"ref11", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_11", "amount":10.0}
+key12:{"ref":"ref12", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_12", "amount":350.56}
+key13:{"ref":"ref13", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_13", "amount":10.0}
+key14:{"ref":"ref14", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_14", "amount":350.56}
+key15:{"ref":"ref15", "categoryId":4, "userId":"User_1", "recipientId":"User_4", "purpose":"Тестовый платеж_15", "amount":15.00}
+```
 
 - GET /analytic
 
@@ -57,18 +75,141 @@ payment1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipien
 ```json
 [
   {
+    "userId": "User_3",
+    "totalSum": 71.981,
+    "analyticInfo": {
+      "3": {
+        "min": 35.99,
+        "max": 35.991,
+        "sum": 71.981
+      }
+    }
+  },
+  {
+    "userId": "User_2",
+    "totalSum": 1051.68,
+    "analyticInfo": {
+      "2": {
+        "min": 350.56,
+        "max": 350.56,
+        "sum": 1051.68
+      }
+    }
+  },
+  {
     "userId": "User_1",
-    "totalSum": 10,
+    "totalSum": 2891.55,
     "analyticInfo": {
       "1": {
         "min": 10,
-        "max": 10,
-        "sum": 10
+        "max": 890,
+        "sum": 2520
+      },
+      "2": {
+        "min": 350.56,
+        "max": 350.56,
+        "sum": 350.56
+      },
+      "3": {
+        "min": 5.99,
+        "max": 5.99,
+        "sum": 5.99
+      },
+      "4": {
+        "min": 15,
+        "max": 15,
+        "sum": 15
       }
     }
   }
 ]
 ```
+
+- Get /analytic/{userId}
+
+Получение аналитики по конкретному пользователю
+
+Запрос
+
+/analytic/User_1
+
+Ответ
+
+```json
+{
+  "userId": "User_1",
+  "totalSum": 2891.55,
+  "analyticInfo": {
+    "1": {
+      "min": 10,
+      "max": 890,
+      "sum": 2520
+    },
+    "2": {
+      "min": 350.56,
+      "max": 350.56,
+      "sum": 350.56
+    },
+    "3": {
+      "min": 5.99,
+      "max": 5.99,
+      "sum": 5.99
+    },
+    "4": {
+      "min": 15,
+      "max": 15,
+      "sum": 15
+    }
+  }
+}
+```
+
+Если такого пользователя нет - вернуть 404 ошибку.
+
+
+- Get /analytic/{userId}/stats
+
+Получение статистики категорий по пользователю
+
+Запрос 
+
+/analytic/User_1/stats
+
+Ответ
+
+```json
+{
+  "oftenCategoryId": 1,
+  "rareCategoryId": 2,
+  "maxAmountCategoryId": 1,
+  "minAmountCategoryId": 3
+}
+```
+
+Если такого пользователя нет - вернуть 404 ошибку.
+
+
+- Get /analytic/{userId}/templates
+
+Получение информации по платежам, которые были выделены как шаблонные для данного пользователя.
+
+Запрос
+
+/analytic/User_1/templates
+
+Ответ
+
+```json
+[
+  {
+    "recipientId": "User_2",
+    "categoryId": 1,
+    "amount": 10
+  }
+]
+```
+
+Если такого пользователя нет - вернуть 404 ошибку.
 
 ## Дополнительная информация
 
