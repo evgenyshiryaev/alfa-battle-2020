@@ -17,21 +17,10 @@ public class PaymentAnalyticsProperties {
 
         private KafkaSourcesProperties sources;
 
-        private KafkaSinkProperties sinks;
-
         @Data
         public static class KafkaSourcesProperties {
-
             private String rawPaymentSource;
 
         }
-
-        @Data
-        public static class KafkaSinkProperties {
-
-            private String paymentAnalyticSink;
-
-        }
-
     }
 }

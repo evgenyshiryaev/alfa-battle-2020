@@ -3,20 +3,17 @@ package com.alfabattle.task2.entities;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class RawPaymentInfo {
-    private String ref;
-    private Integer categoryId;
+@RequiredArgsConstructor
+public class TemplateKey {
     private String userId;
     private String recipientId;
-    private String desc;
+    private Integer categoryId;
     private BigDecimal amount;
 }
-

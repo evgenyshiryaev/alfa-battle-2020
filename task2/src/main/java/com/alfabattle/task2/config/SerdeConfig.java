@@ -1,8 +1,6 @@
 package com.alfabattle.task2.config;
 
-import com.alfabattle.task2.entities.PaymentAnalyticsResult;
-import com.alfabattle.task2.entities.PaymentGroupInfo;
-import com.alfabattle.task2.entities.RawPaymentInfo;
+import com.alfabattle.task2.entities.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -44,5 +42,11 @@ public class SerdeConfig {
     public Serde<PaymentGroupInfo> paymentGroupInfoSerde() {
         final var objectMapper = builder.factory(new JsonFactory()).build();
         return Serdes.serdeFrom(new JsonSerializer<>(objectMapper), new JsonDeserializer<>(PaymentGroupInfo.class));
+    }
+
+    @Bean
+    public  Serde<TemplateKey> templateKeySerde() {
+        final var objectMapper = builder.factory(new JsonFactory()).build();
+        return Serdes.serdeFrom(new JsonSerializer<>(objectMapper), new JsonDeserializer<>(TemplateKey.class));
     }
 }

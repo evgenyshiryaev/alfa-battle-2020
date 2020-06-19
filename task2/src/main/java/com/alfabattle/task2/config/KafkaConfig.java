@@ -39,7 +39,7 @@ public class KafkaConfig {
         return new StreamsBuilderFactoryBean(streamsConfiguration, new CleanupConfig(true, true));
     }
 
-    @Bean
+    @Bean("paymentAnalyticsResultKStream")
     public Topology paymentAnalyticsResultKStream(PaymentInfoKStreamBuilder builder) {
         return builder.build();
     }

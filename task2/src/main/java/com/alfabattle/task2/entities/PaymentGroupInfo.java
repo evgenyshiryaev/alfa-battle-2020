@@ -1,5 +1,6 @@
 package com.alfabattle.task2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,6 @@ public class PaymentGroupInfo {
     private BigDecimal min;
     private BigDecimal max;
     private BigDecimal sum;
+    @JsonIgnore
+    private Integer totalCount;
 }
