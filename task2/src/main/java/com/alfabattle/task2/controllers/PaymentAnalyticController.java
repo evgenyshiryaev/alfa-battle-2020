@@ -1,5 +1,7 @@
 package com.alfabattle.task2.controllers;
 
+import com.alfabattle.task2.converters.UserPaymentAnalyticConverter;
+import com.alfabattle.task2.dto.UserPaymentAnalytic;
 import com.alfabattle.task2.entities.PaymentAnalyticsResult;
 import com.alfabattle.task2.entities.UserPaymentStats;
 import com.alfabattle.task2.entities.UserTemplate;
@@ -22,15 +24,15 @@ public class PaymentAnalyticController {
     private final PaymentAnalyticService paymentAnalyticService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<PaymentAnalyticsResult> getAllAnalytic() {
+    public List<UserPaymentAnalytic> getAllAnalytic() {
         return paymentAnalyticService.getAllAnalytic();
     }
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PaymentAnalyticsResult> getUserAnalytic(@PathVariable("userId") String userId) {
+    public ResponseEntity<UserPaymentAnalytic> getUserAnalytic(@PathVariable("userId") String userId) {
         var optRes = paymentAnalyticService.getAnalyticByUser(userId);
         if (optRes.isPresent()) {
-            return ResponseEntity.ok(optRes.get());
+            return ResponseEntity.ok(UserPaymentAnalyticConverter.convert(optRes.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

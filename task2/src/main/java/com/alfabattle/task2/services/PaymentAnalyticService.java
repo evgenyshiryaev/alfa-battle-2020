@@ -1,8 +1,10 @@
 package com.alfabattle.task2.services;
 
+import com.alfabattle.task2.converters.UserPaymentAnalyticConverter;
+import com.alfabattle.task2.dto.PaymentCategoryInfo;
+import com.alfabattle.task2.dto.UserPaymentAnalytic;
 import com.alfabattle.task2.entities.PaymentAnalyticsResult;
 import com.alfabattle.task2.entities.UserPaymentStats;
-import com.alfabattle.task2.entities.UserPaymentTemplate;
 import com.alfabattle.task2.entities.UserTemplate;
 import com.alfabattle.task2.repositories.PaymentAnalyticRepository;
 import com.alfabattle.task2.repositories.UserTemplateRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +22,13 @@ public class PaymentAnalyticService {
     private final PaymentAnalyticRepository paymentAnalyticRepository;
     private final UserTemplateRepository userTemplateRepository;
 
-    public List<PaymentAnalyticsResult> getAllAnalytic() {
-        return paymentAnalyticRepository.findAll();
+    public List<UserPaymentAnalytic> getAllAnalytic() {
+        var rawAnalytic = paymentAnalyticRepository.findAll();
+        List<UserPaymentAnalytic> res = rawAnalytic
+                .stream()
+                .map(UserPaymentAnalyticConverter::convert)
+                .collect(Collectors.toList());
+        return res;
     }
 
     public Optional<PaymentAnalyticsResult> getAnalyticByUser(String userId) {

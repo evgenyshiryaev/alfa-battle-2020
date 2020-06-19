@@ -1,6 +1,6 @@
 ###Анализируй это
 
-В топике кафки RAW_PAYMENTS находятся данные по платежам пользователей. Брокер доступен по порту 9092.
+В топике кафки RAW_PAYMENTS находятся данные по платежам пользователей. Брокер доступен по порту 29092.
 
 Формат одной записи представлен ниже:
 
@@ -14,7 +14,7 @@ key1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipientId"
 Необходимо реализовать следующую логику:
 - Вычитать все данные из топика Кафки
 - Выполнить агрегацию данных для возможности отображения аналитики по платежам пользователей
-- Реализовать Rest интерфейс для доступа к аналитике по пользователям
+- Реализовать Rest интерфейс для доступа к аналитике по пользователям. Приложение должно быть доступно по порту 8083
 
 ### Уточнения
 Данные уже будут присутствовать в топике RAW_PAYMENTS. Дополнительно никаких данных во время тестирования поступать не будет.
@@ -49,21 +49,21 @@ key1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipientId"
 Пример данных в топике:
 
 ```
-key1:{"ref":"ref1", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_1", "amount":10.0}
-key2:{"ref":"ref2", "categoryId":2, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_2", "amount":350.56}
-key3:{"ref":"ref3", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_3", "amount":700.0}
-key4:{"ref":"ref4", "categoryId":3, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_4", "amount":5.99}
-key5:{"ref":"ref5", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_5", "amount":10.0}
-key6:{"ref":"ref6", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_6", "amount":350.56}
-key7:{"ref":"ref7", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_7", "amount":890.0}
-key8:{"ref":"ref8", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "purpose":"Тестовый платеж_8", "amount":35.99}
-key9:{"ref":"ref9", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_9", "amount":890.0}
-key10:{"ref":"ref10", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "purpose":"Тестовый платеж_10", "amount":35.9910}
-key11:{"ref":"ref11", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_11", "amount":10.0}
-key12:{"ref":"ref12", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_12", "amount":350.56}
-key13:{"ref":"ref13", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "purpose":"Тестовый платеж_13", "amount":10.0}
-key14:{"ref":"ref14", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "purpose":"Тестовый платеж_14", "amount":350.56}
-key15:{"ref":"ref15", "categoryId":4, "userId":"User_1", "recipientId":"User_4", "purpose":"Тестовый платеж_15", "amount":15.00}
+key1:{"ref":"ref1", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_1", "amount":10.0}
+key2:{"ref":"ref2", "categoryId":2, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_2", "amount":350.56}
+key3:{"ref":"ref3", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_3", "amount":700.0}
+key4:{"ref":"ref4", "categoryId":3, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_4", "amount":5.99}
+key5:{"ref":"ref5", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_5", "amount":10.0}
+key6:{"ref":"ref6", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "desc":"Тестовый платеж_6", "amount":350.56}
+key7:{"ref":"ref7", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_7", "amount":890.0}
+key8:{"ref":"ref8", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "desc":"Тестовый платеж_8", "amount":35.99}
+key9:{"ref":"ref9", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_9", "amount":890.0}
+key10:{"ref":"ref10", "categoryId":3, "userId":"User_3", "recipientId":"User_2", "desc":"Тестовый платеж_10", "amount":35.9910}
+key11:{"ref":"ref11", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_11", "amount":10.0}
+key12:{"ref":"ref12", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "desc":"Тестовый платеж_12", "amount":350.56}
+key13:{"ref":"ref13", "categoryId":1, "userId":"User_1", "recipientId":"User_2", "desc":"Тестовый платеж_13", "amount":10.0}
+key14:{"ref":"ref14", "categoryId":2, "userId":"User_2", "recipientId":"User_3", "desc":"Тестовый платеж_14", "amount":350.56}
+key15:{"ref":"ref15", "categoryId":4, "userId":"User_1", "recipientId":"User_4", "desc":"Тестовый платеж_15", "amount":15.00}
 ```
 
 - GET /analytic
@@ -269,7 +269,7 @@ docker exec -i broker kafka-consumer-groups --bootstrap-server broker:9092 --all
                   "schema":{
                      "type":"array",
                      "items":{
-                        "$ref":"#/definitions/PaymentAnalyticsResult"
+                        "$ref":"#/definitions/UserPaymentAnalytic"
                      }
                   }
                },
@@ -309,7 +309,7 @@ docker exec -i broker kafka-consumer-groups --bootstrap-server broker:9092 --all
                "200":{
                   "description":"OK",
                   "schema":{
-                     "$ref":"#/definitions/PaymentAnalyticsResult"
+                     "$ref":"#/definitions/UserPaymentAnalytic"
                   }
                },
                "401":{
@@ -408,25 +408,7 @@ docker exec -i broker kafka-consumer-groups --bootstrap-server broker:9092 --all
       }
    },
    "definitions":{
-      "PaymentAnalyticsResult":{
-         "type":"object",
-         "properties":{
-            "analyticInfo":{
-               "type":"object",
-               "additionalProperties":{
-                  "$ref":"#/definitions/PaymentGroupInfo"
-               }
-            },
-            "totalSum":{
-               "type":"number"
-            },
-            "userId":{
-               "type":"string"
-            }
-         },
-         "title":"PaymentAnalyticsResult"
-      },
-      "PaymentGroupInfo":{
+      "PaymentCategoryInfo":{
          "type":"object",
          "properties":{
             "max":{
@@ -439,7 +421,25 @@ docker exec -i broker kafka-consumer-groups --bootstrap-server broker:9092 --all
                "type":"number"
             }
          },
-         "title":"PaymentGroupInfo"
+         "title":"PaymentCategoryInfo"
+      },
+      "UserPaymentAnalytic":{
+         "type":"object",
+         "properties":{
+            "analyticInfo":{
+               "type":"object",
+               "additionalProperties":{
+                  "$ref":"#/definitions/PaymentCategoryInfo"
+               }
+            },
+            "totalSum":{
+               "type":"number"
+            },
+            "userId":{
+               "type":"string"
+            }
+         },
+         "title":"UserPaymentAnalytic"
       },
       "UserPaymentStats":{
          "type":"object",
