@@ -1,11 +1,14 @@
 package ru.alfabank.alfabattle.task1;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.security.KeyStore;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,17 +20,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.alfabank.alfabattle.task1.modelalfa.ATMDetails;
-import ru.alfabank.alfabattle.task1.modelalfa.ATMStatus;
 import ru.alfabank.alfabattle.task1.modelalfa.JSONResponseBankATMDetails;
-import ru.alfabank.alfabattle.task1.modelalfa.JSONResponseBankATMStatus;
 import ru.alfabank.alfabattle.task1.modeltask.AtmResponse;
 import ru.alfabank.alfabattle.task1.modeltask.AtmResponseConverter;
 
@@ -38,9 +46,12 @@ public class AtmController {
 
     private static final String API_ROOT = "https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service";
     private static final String ATMS_API_PATH = API_ROOT + "/atms";
-    private static final String ATMS_STATUS_API_PATH = API_ROOT + "/atms/status";
+    //private static final String ATMS_STATUS_API_PATH = API_ROOT + "/atms/status";
 
     private static final String CLIENT_ID = "d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9";
+
+
+    private static final String WEB_SOCKET_PATH = "ws://127.0.0.1:8100/hello";
 
 
     @Autowired
@@ -50,9 +61,22 @@ public class AtmController {
     private AtmResponseConverter converter;
 
 
+    private WebSocketStompClient stompClient;
+    private Task1StompSessionHandler sessionHandler;
+
+
     @PostConstruct
     void init() throws Exception {
         initAtms();
+        connectToWebSocket();
+    }
+
+
+    @PreDestroy
+    void destroy() {
+        if (stompClient != null) {
+            stompClient.stop();
+        }
     }
 
 
@@ -66,10 +90,26 @@ public class AtmController {
 
 
     @GetMapping(value = "/nearest")
-    public ResponseEntity<AtmResponse> getNearestAtm(String latitude, String longitude) {
-        int id = atmService.getNearest(latitude, longitude);
+    public ResponseEntity<AtmResponse> getNearestAtm(
+            String latitude, String longitude,
+            @RequestParam(required = false, defaultValue = "false") boolean payments) {
+        int id = atmService.getNearest(latitude, longitude, payments);
         ATMDetails atm = atmService.getById(id);
         return ResponseEntity.ok(converter.convert(atm));
+    }
+
+
+    @GetMapping(value = "/nearest-with-alfik")
+    public ResponseEntity<List<AtmResponse>> getNearestAtmsWithMoney(
+            String latitude, String longitude, BigDecimal alfik) {
+        List<Integer> ids = atmService.getNearestWithAlfik(latitude, longitude, alfik, sessionHandler);
+
+        List<AtmResponse> response = ids.stream()
+                .map(atmService::getById)
+                .map(converter::convert)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -113,18 +153,37 @@ public class AtmController {
         ResponseEntity<JSONResponseBankATMDetails> atmsResponse = restTemplate.exchange(
                 URI.create(ATMS_API_PATH),
                 HttpMethod.GET, httpEntity, JSONResponseBankATMDetails.class);
-        ResponseEntity<JSONResponseBankATMStatus> atmsStatusResponse = restTemplate.exchange(
-                URI.create(ATMS_STATUS_API_PATH),
-                HttpMethod.GET, httpEntity, JSONResponseBankATMStatus.class);
+        //ResponseEntity<JSONResponseBankATMStatus> atmsStatusResponse = restTemplate.exchange(
+        //        URI.create(ATMS_STATUS_API_PATH),
+        //        HttpMethod.GET, httpEntity, JSONResponseBankATMStatus.class);
         log.info("Data is loaded");
 
         List<ATMDetails> atms = atmsResponse.getBody().getData().getAtms();
         atmService.setAtms(atms);
 
-        List<ATMStatus> atmStatuses = atmsStatusResponse.getBody().getData().getAtms();
-        atmService.setAtmStatuses(atmStatuses);
+        //List<ATMStatus> atmStatuses = atmsStatusResponse.getBody().getData().getAtms();
+        //atmService.setAtmStatuses(atmStatuses);
 
         log.info("ATMs are inited");
+    }
+
+
+    private void connectToWebSocket() {
+        log.info("Connecting WebSocket...");
+
+        WebSocketClient client = new StandardWebSocketClient();
+
+        stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+
+        sessionHandler = new Task1StompSessionHandler();
+        ListenableFuture<StompSession> future = stompClient.connect(WEB_SOCKET_PATH, sessionHandler);
+        try {
+            future.get();
+            log.info("WebSocket is connected");
+        } catch (Exception e) {
+            log.error("Cannot connect to WebSocket");
+        }
     }
 
 }

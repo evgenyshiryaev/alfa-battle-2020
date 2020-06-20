@@ -1,3 +1,4 @@
 rootProject.name = 'alfa-battle-2020-task1'
 
 include 'task1'
+include 'websocket'

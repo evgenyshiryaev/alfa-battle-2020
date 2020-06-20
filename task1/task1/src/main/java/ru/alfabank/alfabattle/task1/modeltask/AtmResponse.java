@@ -2,6 +2,7 @@ package ru.alfabank.alfabattle.task1.modeltask;
 
 import lombok.Data;
 
+
 @Data
 public class AtmResponse {
 
@@ -14,5 +15,7 @@ public class AtmResponse {
     private String city;
 
     private String location;
+
+    private boolean payments;
 
 }

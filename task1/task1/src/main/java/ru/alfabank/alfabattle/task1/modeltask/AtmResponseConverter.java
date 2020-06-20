@@ -13,6 +13,8 @@ public interface AtmResponseConverter {
     @Mapping(source = "coordinates.longitude", target = "longitude")
     @Mapping(source = "address.city", target = "city")
     @Mapping(source = "address.location", target = "location")
+    @Mapping(target = "payments",
+            expression = "java( \"Y\".equals(atmDetails.getServices().getPayments()) )")
     AtmResponse convert(ATMDetails atmDetails);
 
 }
