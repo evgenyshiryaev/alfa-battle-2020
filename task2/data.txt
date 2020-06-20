@@ -745,9 +745,9 @@ U031706200000744:{"ref":"U031706200000744","categoryId":1,"userId":"XA1VWF","rec
 U031706200000745:{"ref":"U031706200000745","categoryId":3,"userId":"XA1VWF","recipientId":"XA6BE9","desc":"Платежное поручение №745","amount":2343.33}
 U031706200000746:{"ref":"U031706200000746","categoryId":2,"userId":"XA1VWF","recipientId":"XA6BE9","desc":"Платежное поручение №746","amount":3124.44}
 U031706200000838:{"ref":"U031706200000838","categtId":"XA6BE9","desc":"Платежн
-U031706200000839:{"refientId":"XA6F9K","desc":"Платежное поручение №839","amount":2531.56sadasda}
-U031706200000841:{"rtegoryId":1,"userId":"XA3SZV","recipientId":"XA6F9K",ббб....41,"amount":9312.62}
-U031706200000842:{"ref":"U031706200000842","categoryId":ount":7386.74}
+U031706200000839:refientId":"XA6F9K","desc":"Платежное поручение №839","amount":2531.56sadasda}
+U031706200000841:{"rtegoryId":1,"userId":"XA3SZV","recipientId":"XA6F9K",ббб....41,"amount":9312.6
+U031706200000842:{"ref":"U031706200000842","categoryId":ount":73
 U031706200000747:{"ref":"U031706200000747","categoryId":2,"userId":"XA1VWF","recipientId":"XA6F9K","desc":"Платежное поручение №747","amount":642.04}
 U031706200000748:{"ref":"U031706200000748","categoryId":1,"userId":"XA1VWF","recipientId":"XA1VWF","desc":"Платежное поручение №748","amount":9465.1}
 U031706200000749:{"ref":"U031706200000749","categoryId":3,"userId":"XA1VWJ","recipientId":"XA6BFO","desc":"Платежное поручение №749","amount":6494.08}
