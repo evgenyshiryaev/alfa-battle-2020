@@ -46,6 +46,16 @@ key1:{"ref":"U030306190000188", "categoryId":1, "userId":"XAABAA", "recipientId"
 
 ### Ожидаемый интерфейс
 
+Хелсчек
+
+GET /admin/health
+
+Ожидаем получить 200 ответ
+
+```json
+{"status":"UP"}
+```
+
 Пример данных в топике:
 
 ```
