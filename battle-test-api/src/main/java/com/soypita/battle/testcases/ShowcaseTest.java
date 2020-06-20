@@ -12,5 +12,4 @@ public class ShowcaseTest extends BaseTest {
                 .when().get("/actuator/health")
                 .then().assertThat().statusCode(HttpStatus.OK.value());
     }
-
 }
