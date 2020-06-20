@@ -19,7 +19,7 @@ public class Task1Test extends BaseTest {
                 .extract().as(Task1AtmResponse.class);
 
         Task1AtmResponse expected = new Task1AtmResponse(
-                352074, "64.53249", "40.602063", "Архангельск", "проспект Московский, д. 35");
+                352074, "64.53249", "40.602063", "РђСЂС…Р°РЅРіРµР»СЊСЃРє", "РїСЂРѕСЃРїРµРєС‚ РњРѕСЃРєРѕРІСЃРєРёР№, Рґ. 35");
         Assertions.assertEquals(expected, actual);
     }
 
