@@ -4,6 +4,8 @@ services:
   battle-test-app:
     build:
       context: .
+    volumes:
+      - ./log:/log/testapp/
     environment:
       SPRING_APPLICATION_JSON: '{
       "spring": {
