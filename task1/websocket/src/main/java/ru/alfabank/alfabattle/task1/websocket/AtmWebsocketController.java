@@ -1,7 +1,9 @@
 package ru.alfabank.alfabattle.task1.websocket;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,7 +13,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,8 +31,9 @@ public class AtmWebsocketController {
 
     @PostConstruct
     void init() throws Exception {
-        File dataFile = ResourceUtils.getFile("classpath:data.json");
-        String dataJson = Files.readString(dataFile.toPath());
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data.json");
+        String dataJson = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines().collect(Collectors.joining("\n"));
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<WebSocketResponse> dataList = objectMapper.readValue(
@@ -39,6 +41,7 @@ public class AtmWebsocketController {
 
         data = dataList.stream()
                 .collect(Collectors.toMap(WebSocketResponse::getDeviceId, d -> d));
+        log.info("{} entries loaded", data.size());
     }
 
 
