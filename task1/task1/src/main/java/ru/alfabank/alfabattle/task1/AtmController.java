@@ -1,6 +1,6 @@
 package ru.alfabank.alfabattle.task1;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.security.KeyStore;
 import java.util.List;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,7 +91,8 @@ public class AtmController {
     private static RestTemplate getRestTemplate() throws Exception {
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         char[] password = "password".toCharArray();
-        keyStore.load(new FileInputStream(ResourceUtils.getFile("classpath:alfabattle.jks")), password);
+        InputStream jksInputStream = AtmController.class.getClassLoader().getResourceAsStream("alfabattle.jks");
+        keyStore.load(jksInputStream, password);
 
         SSLContext sslContext = SSLContexts.custom()
                 .loadKeyMaterial(keyStore, password)

@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -27,7 +28,8 @@ import ru.alfabank.alfabattle.task1.modeltask.WebSocketResponse;
 @Service
 public class AtmWebSocketClient implements StompSessionHandler {
 
-    private static final String WEB_SOCKET_PATH = "ws://127.0.0.1:8100";
+    @Autowired
+    private Task1Properties properties;
 
 
     private WebSocketStompClient stompClient;
@@ -39,14 +41,14 @@ public class AtmWebSocketClient implements StompSessionHandler {
 
     @PostConstruct
     void init() {
-        log.info("Connecting WebSocket...");
+        log.info("Connecting WebSocket {}...", properties.getWebSocketPath());
 
         WebSocketClient client = new StandardWebSocketClient();
 
         stompClient = new WebSocketStompClient(client);
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
-        ListenableFuture<StompSession> future = stompClient.connect(WEB_SOCKET_PATH, this);
+        ListenableFuture<StompSession> future = stompClient.connect(properties.getWebSocketPath(), this);
         try {
             future.get();
             log.info("WebSocket is connected");
