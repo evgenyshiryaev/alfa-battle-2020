@@ -79,7 +79,9 @@
 Ответ: 200 [AtmResponse]
 
 Узнать число доступных Альфиков для указанного банкомата можно через внешний сервис, предоставляющий WebSocket STOMP интерфейс.
-TODO: инструкция по запуску
+Для запуска:
+- wget https://raw.githubusercontent.com/evgenyshiryaev/alfa-battle-docker/master/task1-websocket-docker-compose.yml
+- docker-compose -f task1-websocket-docker-compose.yml up -d
 Адрес: ws://IP:8100
 Запрос: { “deviceId”: 0 }
 Ответ на /topic/afik: { “deviceId”: 0, “alfik”: 0 }
