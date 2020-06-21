@@ -1,11 +1,12 @@
 package ru.alfabank.alfabattle.task1;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.alfabank.alfabattle.task1.modelalfa.ATMDetails;
@@ -13,6 +14,10 @@ import ru.alfabank.alfabattle.task1.modelalfa.ATMDetails;
 
 @Service
 public class AtmService {
+
+    @Autowired
+    private AtmWebSocketClient webSocketClient;
+
 
     private final Map<Integer, ATMDetails> atmById = new HashMap<>();
     //private final Map<Integer, ATMStatus> atmStatusById = new HashMap<>();
@@ -42,14 +47,21 @@ public class AtmService {
     }
 
 
-    public List<Integer> getNearestWithAlfik(String latitude, String longitude, BigDecimal alfik,
-            Task1StompSessionHandler sessionHandler) {
+    public List<Integer> getNearestWithAlfik(String latitude, String longitude, int alfik) {
         List<ATMDetails> nearestAtms = getNearestAtms(latitude, longitude);
+
+        AtomicInteger restAlfik = new AtomicInteger(alfik);
+
         return nearestAtms.stream()
-                .takeWhile(atm -> {
-                    // TODO
+                .map(ATMDetails::getDeviceId)
+                .takeWhile(deviceId -> {
+                    if (restAlfik.get() <= 0) {
+                        return false;
+                    }
+                    int atmAfik = webSocketClient.getAtmAlfik(deviceId);
+                    restAlfik.addAndGet(-atmAfik);
                     return true;
-                }).map(ATMDetails::getDeviceId)
+                })
                 .collect(Collectors.toList());
         
     }

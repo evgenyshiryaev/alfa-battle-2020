@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.alfabank.alfabattle.task1.websocket.model.WebSocketRequest;
+import ru.alfabank.alfabattle.task1.websocket.model.WebSocketResponse;
 
 
 @Slf4j
@@ -40,8 +42,8 @@ public class AtmWebsocketController {
     }
 
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/messages")
+    @MessageMapping("/")
+    @SendTo("/topic/afik")
     public WebSocketResponse greeting(WebSocketRequest request) throws Exception {
         log.info("Got {}", request);
         return data.get(request.getDeviceId());

@@ -1,14 +1,12 @@
 package ru.alfabank.alfabattle.task1;
 
 import java.io.FileInputStream;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.security.KeyStore;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,18 +18,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.alfabank.alfabattle.task1.modelalfa.ATMDetails;
@@ -51,9 +43,6 @@ public class AtmController {
     private static final String CLIENT_ID = "d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9";
 
 
-    private static final String WEB_SOCKET_PATH = "ws://127.0.0.1:8100/hello";
-
-
     @Autowired
     private AtmService atmService;
 
@@ -61,22 +50,9 @@ public class AtmController {
     private AtmResponseConverter converter;
 
 
-    private WebSocketStompClient stompClient;
-    private Task1StompSessionHandler sessionHandler;
-
-
     @PostConstruct
     void init() throws Exception {
         initAtms();
-        connectToWebSocket();
-    }
-
-
-    @PreDestroy
-    void destroy() {
-        if (stompClient != null) {
-            stompClient.stop();
-        }
     }
 
 
@@ -101,8 +77,8 @@ public class AtmController {
 
     @GetMapping(value = "/nearest-with-alfik")
     public ResponseEntity<List<AtmResponse>> getNearestAtmsWithMoney(
-            String latitude, String longitude, BigDecimal alfik) {
-        List<Integer> ids = atmService.getNearestWithAlfik(latitude, longitude, alfik, sessionHandler);
+            String latitude, String longitude, int alfik) {
+        List<Integer> ids = atmService.getNearestWithAlfik(latitude, longitude, alfik);
 
         List<AtmResponse> response = ids.stream()
                 .map(atmService::getById)
@@ -165,25 +141,6 @@ public class AtmController {
         //atmService.setAtmStatuses(atmStatuses);
 
         log.info("ATMs are inited");
-    }
-
-
-    private void connectToWebSocket() {
-        log.info("Connecting WebSocket...");
-
-        WebSocketClient client = new StandardWebSocketClient();
-
-        stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-
-        sessionHandler = new Task1StompSessionHandler();
-        ListenableFuture<StompSession> future = stompClient.connect(WEB_SOCKET_PATH, sessionHandler);
-        try {
-            future.get();
-            log.info("WebSocket is connected");
-        } catch (Exception e) {
-            log.error("Cannot connect to WebSocket");
-        }
     }
 
 }

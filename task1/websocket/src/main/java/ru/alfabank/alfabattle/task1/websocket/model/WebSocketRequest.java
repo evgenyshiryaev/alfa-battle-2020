@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle.task1.websocket;
+package ru.alfabank.alfabattle.task1.websocket.model;
 
 import lombok.Data;
 
