@@ -16,15 +16,6 @@ services:
       },
       "server": {
         "port": 8080
-      },
-      "coefficient": 80,
-      "mapping": {
-        "taskPorts": {
-          "1": 8080
-        },
-        "taskNames": {
-          "1": "com.soypita.battle.testcases.FirstTest"
-        }
       }
     }'
     ports:
@@ -36,4 +27,4 @@ services:
     volumes:
       - ./database:/data
     ports:
-      - "27017:27017"
+      - 27017:27017

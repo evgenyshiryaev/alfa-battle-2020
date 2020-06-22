@@ -5,12 +5,14 @@ spring:
       database: alfa-battle
 
 server:
-  port: 8080
+  port: 8090
 
 coefficient: 80
 
 mapping:
   taskPorts:
+    0: 8090
     1: 8080
   taskNames:
-    1: com.soypita.battle.testcases.FirstTest
+    0: com.soypita.battle.testcases.ShowcaseTest
+    1: com.soypita.battle.testcases.Task1Test

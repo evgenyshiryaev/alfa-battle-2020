@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  alfa-battle-task1:
+    build: .
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "webSocketPath": "ws://130.193.51.228:8100"
+    }'
+    ports:
+      - 8080:8080
