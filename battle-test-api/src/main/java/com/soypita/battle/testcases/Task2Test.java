@@ -19,6 +19,7 @@ public class Task2Test extends BaseTest {
     private static Set<String> VALID_USER_ID_SET = Set.of("XAABAA", "XA3SZV", "XA1VWF", "XA1VWB", "XA1VWJ");
     private static Set<String> VALID_RECIPIENT_TEMPLATE_SET = Set.of("XA6BFO", "XA6F9K");
     private static Set<Integer> VALID_CATEGORY_TEMPLATE_SET = Set.of(1, 3);
+    private static String USER_NOT_FOUND_RESPONSE = "user not found";
 
     @Test
     public void successfullyPassHealthCheck(String host) {
@@ -84,9 +85,12 @@ public class Task2Test extends BaseTest {
     public void shouldReturnNotFoundCodeForGetPaymentAnalyticByUnexpectedUserID(String host) {
         log.info("Run shouldReturnNotFoundCodeForGetPaymentAnalyticByUnexpectedUserID test for {}", host);
 
-        getGiven(host)
+        var resp = getGiven(host)
                 .when().get("/analytic/UNEXPECTED")
-                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().body().asString();
+
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
     }
 
     @Test
@@ -112,9 +116,12 @@ public class Task2Test extends BaseTest {
     public void shouldReturnNotFoundCodeForUserPaymentStatsByUnexpectedUserID(String host) {
         log.info("Run shouldReturnNotFoundCodeForUserPaymentStatsByUnexpectedUserID test for {}", host);
 
-        getGiven(host)
+        var resp = getGiven(host)
                 .when().get("/analytic/UNEXPECTED/stats")
-                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().body().asString();
+
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
     }
 
     @Test
@@ -148,13 +155,12 @@ public class Task2Test extends BaseTest {
         // when
         var resp = getGiven(host)
                 .when().get("/analytic/UNEXPECTED/templates")
-                .then().assertThat().statusCode(HttpStatus.OK.value())
-                .extract().body().jsonPath().getList(".", UserTemplate.class);
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().body().asString();
 
         log.info("Request perform with response {}", resp);
 
         // then
-        assertNotNull(resp);
-        assertTrue(resp.isEmpty());
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
     }
 }
