@@ -1,8 +1,9 @@
 package com.alfabattle.task2.controllers;
 
 import com.alfabattle.task2.converters.UserPaymentAnalyticConverter;
+import com.alfabattle.task2.dto.ErrorResponse;
 import com.alfabattle.task2.dto.UserPaymentAnalytic;
-import com.alfabattle.task2.entities.PaymentAnalyticsResult;
+import com.alfabattle.task2.entities.UserNotFoundException;
 import com.alfabattle.task2.entities.UserPaymentStats;
 import com.alfabattle.task2.entities.UserTemplate;
 import com.alfabattle.task2.services.PaymentAnalyticService;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,25 +28,27 @@ public class PaymentAnalyticController {
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserPaymentAnalytic> getUserAnalytic(@PathVariable("userId") String userId) {
-        var optRes = paymentAnalyticService.getAnalyticByUser(userId);
-        if (optRes.isPresent()) {
-            return ResponseEntity.ok(UserPaymentAnalyticConverter.convert(optRes.get()));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        var res = paymentAnalyticService.getAnalyticByUser(userId);
+        return ResponseEntity.ok(UserPaymentAnalyticConverter.convert(res));
     }
 
     @GetMapping(value = "/{userId}/stats", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserPaymentStats> getPaymentStatsByUser(@PathVariable("userId") String userId) {
-        var optRes = paymentAnalyticService.getStatsForUser(userId);
-        if (optRes.isPresent()) {
-            return ResponseEntity.ok(optRes.get());
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        var res = paymentAnalyticService.getStatsForUser(userId);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping(value = "/{userId}/templates", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserTemplate> getUserTemplates(@PathVariable("userId") String userId) {
         return paymentAnalyticService.getUserPaymentTemplates(userId);
+    }
+
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorResponse handle(UserNotFoundException ex) {
+        return new ErrorResponse("user not found");
     }
 
     // - Выводит список всех пользователей с их категориями

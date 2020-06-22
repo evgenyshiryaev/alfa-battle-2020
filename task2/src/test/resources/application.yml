@@ -1,17 +1,22 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: alfa-battle
   main:
     allow-bean-definition-overriding:           true
   kafka:
     streams:
       application-id:                           payment-analytics-api
       client-id:                                payment-analytics-api
-      bootstrap-servers:                        kafka1:9092
+      bootstrap-servers:                        130.193.51.228:29092
       properties:
         metrics.recording.level:                DEBUG
         processing.guarantee:                   at_least_once
         auto.offset.reset:                      earliest
         cache.max.bytes.buffering:              10240
         commit.interval.ms:                     60000
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
         consumer:
           group-id:                             payment-analytic-consumer
           max.poll.records:                     30
@@ -21,6 +26,4 @@ analytics:
     enabled:                                    true
     sources:
       rawPaymentSource:                    RAW_PAYMENTS
-    sinks:
-      paymentAnalyticSink:                 PAYMENT_ANALYTICS
 
