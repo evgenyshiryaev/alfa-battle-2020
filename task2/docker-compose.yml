@@ -2,35 +2,71 @@
 version: '3'
 
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.0
-    hostname: zookeeper
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
+  battle-test-app:
+    build:
+      context: .
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  broker:
-    image: confluentinc/cp-kafka:5.5.0
-    hostname: broker
-    container_name: broker
+      SPRING_APPLICATION_JSON:
+        '{
+           "server": {
+             "port": 8081
+           },
+           "spring": {
+             "main": {
+               "allow-bean-definition-overriding": true
+             },
+             "data": {
+               "mongodb": {
+                 "uri": "mongodb://db:27017",
+                 "database": "alfa-battle"
+               }
+             },
+             "kafka": {
+               "streams": {
+                 "application-id": "payment-analytics-api",
+                 "client-id": "payment-analytics-api",
+                 "bootstrap-servers": "broker:9092",
+                 "properties": {
+                   "metrics.recording.level": "DEBUG",
+                   "processing.guarantee": "at_least_once",
+                   "auto.offset.reset": "earliest",
+                   "cache.max.bytes.buffering": 10240,
+                   "commit.interval.ms": 60000,
+                   "default": {
+                     "deserialization.exception.handler": "org.apache.kafka.streams.errors.LogAndContinueExceptionHandler"
+                   },
+                   "consumer": {
+                     "group-id": "payment-analytic-consumer",
+                     "max.poll.records": 30
+                   }
+                 }
+               }
+             }
+           },
+           "management": {
+             "endpoints": {
+               "web": {
+                 "base-path": "/admin"
+               }
+             }
+           },
+           "analytics": {
+             "kafka": {
+               "enabled": true,
+               "sources": {
+                 "rawPaymentSource": "RAW_PAYMENTS"
+               }
+             }
+           }
+         }'
+    ports:
+      - 8081:8081
     depends_on:
-      - zookeeper
-    ports:
-      - "29092:29092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      - db
+    networks:
+      - scripts_default
 
   db:
     image: mongo
-    volumes:
-      - ./database:/data/db
     ports:
       - "27017:27017"

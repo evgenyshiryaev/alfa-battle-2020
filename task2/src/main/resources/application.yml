@@ -10,9 +10,9 @@ spring:
       database: alfa-battle
   kafka:
     streams:
-      application-id:                           payment-analytics-api
-      client-id:                                payment-analytics-api
-      bootstrap-servers:                        localhost:29092
+      application-id:                           payment-analytics-api-local
+      client-id:                                payment-analytics-api-local
+      bootstrap-servers:                        130.193.51.228:29092
       properties:
         metrics.recording.level:                DEBUG
         processing.guarantee:                   at_least_once
@@ -22,7 +22,7 @@ spring:
         default:
           deserialization.exception.handler:  org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
         consumer:
-          group-id:                             payment-analytic-consumer
+          group-id:                             payment-analytic-consumer-local
           max.poll.records:                     30
 
 management:

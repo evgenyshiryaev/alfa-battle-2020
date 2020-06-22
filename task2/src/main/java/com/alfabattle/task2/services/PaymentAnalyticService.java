@@ -4,6 +4,7 @@ import com.alfabattle.task2.converters.UserPaymentAnalyticConverter;
 import com.alfabattle.task2.dto.PaymentCategoryInfo;
 import com.alfabattle.task2.dto.UserPaymentAnalytic;
 import com.alfabattle.task2.entities.PaymentAnalyticsResult;
+import com.alfabattle.task2.entities.UserNotFoundException;
 import com.alfabattle.task2.entities.UserPaymentStats;
 import com.alfabattle.task2.entities.UserTemplate;
 import com.alfabattle.task2.repositories.PaymentAnalyticRepository;
@@ -31,15 +32,20 @@ public class PaymentAnalyticService {
         return res;
     }
 
-    public Optional<PaymentAnalyticsResult> getAnalyticByUser(String userId) {
-        return paymentAnalyticRepository.findByUserId(userId);
+    public PaymentAnalyticsResult getAnalyticByUser(String userId) {
+        var optUser = paymentAnalyticRepository.findByUserId(userId);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return optUser.get();
     }
 
-    public Optional<UserPaymentStats> getStatsForUser(String userId) {
+    public UserPaymentStats getStatsForUser(String userId) {
         var optUserAnalytic = paymentAnalyticRepository.findByUserId(userId);
         if (optUserAnalytic.isEmpty()) {
-            return Optional.empty();
+            throw new UserNotFoundException();
         }
+
         var userAnalytic = optUserAnalytic.get();
 
         Integer oftenCategoryId = userAnalytic.getAnalyticInfo()
@@ -70,18 +76,20 @@ public class PaymentAnalyticService {
                 .get()
                 .getKey();
 
-        return Optional.ofNullable(
-                UserPaymentStats.builder()
-                        .oftenCategoryId(oftenCategoryId)
-                        .rareCategoryId(rareCategoryId)
-                        .maxAmountCategoryId(maxAmountCategoryId)
-                        .minAmountCategoryId(minAmountCategoryId)
-                        .build()
-        );
+        return UserPaymentStats.builder()
+                .oftenCategoryId(oftenCategoryId)
+                .rareCategoryId(rareCategoryId)
+                .maxAmountCategoryId(maxAmountCategoryId)
+                .minAmountCategoryId(minAmountCategoryId)
+                .build();
 
     }
 
     public List<UserTemplate> getUserPaymentTemplates(String userId) {
+        var optUserAnalytic = paymentAnalyticRepository.findByUserId(userId);
+        if (optUserAnalytic.isEmpty()) {
+            throw new UserNotFoundException();
+        }
         return userTemplateRepository.findByUserId(userId);
     }
 }
