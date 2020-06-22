@@ -4,6 +4,8 @@ services:
   battle-test-app:
     build:
       context: .
+    volumes:
+      - ./log:/log/testapp/
     environment:
       SPRING_APPLICATION_JSON: '{
       "spring": {
@@ -20,12 +22,15 @@ services:
       "coefficient": 80,
       "mapping": {
         "taskPorts": {
-          "1": 8080
+          "0": 8080,
+          "1": 8080,
+          "2": 8081
         },
         "taskNames": {
-          "1": "com.soypita.battle.testcases.FirstTest"
+          "0": "com.soypita.battle.testcases.ShowcaseTest",
+          "1": "com.soypita.battle.testcases.Task1Test",
+          "2": "com.soypita.battle.testcases.Task2Test"
         }
-      }
     }'
     ports:
       - 8080:8080
@@ -34,6 +39,6 @@ services:
   db:
     image: mongo
     volumes:
-      - ./database:/data
+      - ./database:/data/db
     ports:
-      - "27017:27017"
+      - 27017:27017

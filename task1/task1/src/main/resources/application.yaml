@@ -1,0 +1,4 @@
+server:
+  port: 8080
+
+webSocketPath: "ws://127.0.0.1:8100"

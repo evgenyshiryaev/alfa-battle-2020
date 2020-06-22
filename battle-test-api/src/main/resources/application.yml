@@ -11,6 +11,10 @@ coefficient: 80
 
 mapping:
   taskPorts:
+    0: 8090
     1: 8080
+    2: 8081
   taskNames:
-    1: com.soypita.battle.testcases.FirstTest
+    0: com.soypita.battle.testcases.ShowcaseTest
+    1: com.soypita.battle.testcases.Task1Test
+    2: com.soypita.battle.testcases.Task2Test
