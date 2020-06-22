@@ -17,12 +17,12 @@ services:
         }
       },
       "server": {
-        "port": 8090
+        "port": 8080
       },
       "coefficient": 80,
       "mapping": {
         "taskPorts": {
-          "0": 8090,
+          "0": 8080,
           "1": 8080,
           "2": 8081
         },
@@ -31,10 +31,9 @@ services:
           "1": "com.soypita.battle.testcases.Task1Test",
           "2": "com.soypita.battle.testcases.Task2Test"
         }
-      }
     }'
     ports:
-      - 8090:8090
+      - 8080:8080
     depends_on:
       - db
   db:
@@ -42,4 +41,4 @@ services:
     volumes:
       - ./database:/data/db
     ports:
-      - "27017:27017"
+      - 27017:27017

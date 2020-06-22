@@ -20,4 +20,6 @@ public class Task1AtmResponse {
 
     private String location;
 
+    private boolean payments;
+
 }
