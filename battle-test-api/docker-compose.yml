@@ -2,8 +2,7 @@ version: "3"
 
 services:
   battle-test-app:
-    build:
-      context: .
+    image: arpmipg/alfa-battle-private:battle-test-api
     volumes:
       - ./log:/log/testapp/
     environment:
