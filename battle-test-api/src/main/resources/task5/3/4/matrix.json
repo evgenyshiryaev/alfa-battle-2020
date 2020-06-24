@@ -1,0 +1,1 @@
+{"loyaltyCardRules":[{"shopId":-1,"discount":0.03},{"shopId":2,"discount":0.05}],"itemCountRules":[{"shopId":-1,"itemId":"3416444","triggerQuantity":4,"bonusQuantity":1},{"shopId":2,"itemId":"3416444","triggerQuantity":3,"bonusQuantity":2}]}
