@@ -1,0 +1,6 @@
+app:
+  reference:
+    itemsPath: 'classpath:reference/items-TestReferenceDataService.csv'
+    itemGroupsPath: 'classpath:reference/groups-TestReferenceDataService.csv'
+
+
