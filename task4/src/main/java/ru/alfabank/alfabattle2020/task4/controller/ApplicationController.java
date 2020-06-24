@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.elasticredits.controller;
+package ru.alfabank.alfabattle2020.task4.controller;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.elasticredits.entity;
+package ru.alfabank.alfabattle2020.task4.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

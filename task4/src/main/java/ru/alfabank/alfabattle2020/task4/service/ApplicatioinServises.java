@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.elasticredits.service;
+package ru.alfabank.alfabattle2020.task4.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
