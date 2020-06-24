@@ -1,0 +1,8 @@
+{
+  "shopId" : 10,
+  "loyaltyCard" : true,
+  "positions" : [ {
+    "itemId" : "3683968",
+    "quantity" : 2
+  } ]
+}

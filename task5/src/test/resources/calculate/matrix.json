@@ -1,0 +1,35 @@
+{
+  "loyaltyCardRules" : [ {
+    "shopId" : -1,
+    "discount" : 0.05
+  } ],
+  "itemCountRules" : [ {
+    "shopId" : 10,
+    "itemId" : "3688443",
+    "triggerQuantity" : 2,
+    "bonusQuantity" : 1
+  }, {
+    "shopId" : -1,
+    "itemId" : "3432166",
+    "triggerQuantity" : 1,
+    "bonusQuantity" : 1
+  }, {
+    "shopId" : 10,
+    "itemId" : "3432166",
+    "triggerQuantity" : 3,
+    "bonusQuantity" : 1
+  } ],
+  "itemGroupRules" : [ {
+    "shopId" : 10,
+    "groupId" : "FD0611002",
+    "discount" : 0.1
+  }, {
+    "shopId" : -1,
+    "groupId" : "NF1301002",
+    "discount" : 0.05
+  }, {
+    "shopId" : 10,
+    "groupId" : "3432166",
+    "discount" : 0.02
+  } ]
+}

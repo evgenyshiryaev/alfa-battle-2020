@@ -1,0 +1,12 @@
+logging:
+  pattern:    console: "%d{HH:mm:ss.SSS} [%10.10t] %5level %36.36c{1.} - %msg%n"
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.x5: DEBUG 
+app:
+  reference:
+    itemsPath: 'classpath:reference/items-TestReferenceDataService.csv'
+    itemGroupsPath: 'classpath:reference/groups-TestReferenceDataService.csv'
+
+
