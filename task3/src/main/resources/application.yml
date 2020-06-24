@@ -1,0 +1,4 @@
+spring:
+  data:
+    elastic:
+      uri: http://localhost:9200
