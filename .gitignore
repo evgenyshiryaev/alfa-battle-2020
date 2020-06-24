@@ -3,6 +3,7 @@
 bin
 build
 .idea/
+.DS_Store
 
 .classpath
 .project
