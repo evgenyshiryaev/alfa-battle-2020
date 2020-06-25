@@ -24,14 +24,14 @@ public class PredictController {
     }
 
     @GetMapping(value = "/branches/{id}/predict", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BranchesWithPredicting getBranchesWithPredicting(@PathVariable Long id, @RequestParam Integer dayOgWeek, @RequestParam Integer hourOfDay) {
+    public BranchesWithPredicting getBranchesWithPredicting(@PathVariable Long id, @RequestParam Integer dayOfWeek, @RequestParam Integer hourOfDay) {
 
         BranchesWithPredicting branchesWithPredicting = new BranchesWithPredicting(branchesService.findById(id));
-        DataTimeForModel dataTimeForModel = new DataTimeForModel(id, dayOgWeek, hourOfDay);
+        DataTimeForModel dataTimeForModel = new DataTimeForModel(id, dayOfWeek, hourOfDay);
 
         branchesWithPredicting.setPredicting(dataAnalystService.getModel().get(dataTimeForModel));
         branchesWithPredicting.setHourOfDay(hourOfDay);
-        branchesWithPredicting.setDayOfWeek(dayOgWeek);
+        branchesWithPredicting.setDayOfWeek(dayOfWeek);
 
         return branchesWithPredicting;
     }
