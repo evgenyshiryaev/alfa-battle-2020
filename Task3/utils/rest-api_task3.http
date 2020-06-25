@@ -1,4 +1,4 @@
-GET http://localhost:8080/branches/612/predict?dayOfWeek=1&hourOfDay=14
+GET http://localhost:8080/branches/627/predict?dayOfWeek=5&hourOfDay=11
 Accept: */*
 Cache-Control: no-cache
 
@@ -22,8 +22,8 @@ Cache-Control: no-cache
 <> 2020-06-24T023908.200.json
 
 ###
-#55.773284, 37.624125
-GET http://localhost:8080/branches?lat=55.773284&lon=37.624125
+#55.747938, 37.627654
+GET http://localhost:8080/branches?lat=55.747938&lon=37.627654
 Accept: */*
 Cache-Control: no-cache
 

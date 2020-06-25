@@ -3,7 +3,7 @@ package ru.alfa.task3.dto;
 import ru.alfa.task3.entity.Branches;
 
 public class BranchesWithDistance extends Branches {
-    private Double distance;
+    private Long distance; //метры
 
     public BranchesWithDistance(Branches branches) {
         this.setId(branches.getId());
@@ -13,11 +13,11 @@ public class BranchesWithDistance extends Branches {
         this.setLon(branches.getLon());
     }
 
-    public Double getDistance() {
+    public Long getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(Long distance) {
         this.distance = distance;
     }
 

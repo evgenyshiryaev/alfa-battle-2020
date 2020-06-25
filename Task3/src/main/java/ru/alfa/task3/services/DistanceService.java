@@ -31,11 +31,11 @@ public class DistanceService {
         return branchesWithDistances.get(0);
     }
 
-    public Double countDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
+    public Long countDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
         return distance(lat1, lat2, lon1, lon2, 0, 0);
     }
 
-    public double distance(double lat1, double lat2, double lon1,
+    public Long distance(double lat1, double lat2, double lon1,
                            double lon2, double el1, double el2) {
 
         final int R = 6371; // радиус земля
@@ -46,12 +46,12 @@ public class DistanceService {
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // конвертируем в метро
+        double distance = R * c * 1000; // конвертируем в метры
 
         double height = el1 - el2;
 
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
-        return Math.sqrt(distance);
+        return Math.round(Math.sqrt(distance));
     }
 }
