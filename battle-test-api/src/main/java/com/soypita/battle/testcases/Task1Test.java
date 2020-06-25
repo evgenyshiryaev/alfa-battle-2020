@@ -8,11 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import com.soypita.battle.testcases.models.task1.AtmResponse;
+import com.soypita.battle.testcases.models.task1.ErrorResponse;
 
 
 // Total tests = 20
 // Points per test = 4
 public class Task1Test extends BaseTest {
+
+    private static final String API_PATH = "/atms";
+
 
     // 1
     // tests = 6, points = 24
@@ -20,7 +24,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getByIdSampleFoundTest(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/153463")
+                .when().get(API_PATH + "/153463")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -31,16 +35,20 @@ public class Task1Test extends BaseTest {
 
     @Test
     public void getByIdSampleNotFoundTest(String host) {
-        getGiven(host)
-                .when().get("/1")
-                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+        ErrorResponse actual = getGiven(host)
+                .when().get(API_PATH + "/1")
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().as(ErrorResponse.class);
+
+        ErrorResponse expected = new ErrorResponse("atm not found");
+        Assertions.assertEquals(expected, actual);
     }
 
 
     @Test
     public void getById1FoundTest(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/352074")
+                .when().get(API_PATH + "/352074")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -51,16 +59,20 @@ public class Task1Test extends BaseTest {
 
     @Test
     public void getById1NotFoundTest(String host) {
-        getGiven(host)
-                .when().get("/69")
-                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+        ErrorResponse actual = getGiven(host)
+                .when().get(API_PATH + "/69")
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().as(ErrorResponse.class);
+
+        ErrorResponse expected = new ErrorResponse("atm not found");
+        Assertions.assertEquals(expected, actual);
     }
 
 
     @Test
     public void getById2FoundTest(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/220588")
+                .when().get(API_PATH + "/220588")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -71,9 +83,13 @@ public class Task1Test extends BaseTest {
 
     @Test
     public void getById2NotFoundTest(String host) {
-        getGiven(host)
-                .when().get("/666")
-                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+        ErrorResponse actual = getGiven(host)
+                .when().get(API_PATH + "/666")
+                .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                .extract().as(ErrorResponse.class);
+
+        ErrorResponse expected = new ErrorResponse("atm not found");
+        Assertions.assertEquals(expected, actual);
     }
 
 
@@ -83,7 +99,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestSample1Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=55.66&longitude=37.63")
+                .when().get(API_PATH + "/nearest?latitude=55.66&longitude=37.63")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -95,7 +111,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestSample2Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=55.66&longitude=37.63&payments=true")
+                .when().get(API_PATH + "/nearest?latitude=55.66&longitude=37.63&payments=true")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -108,7 +124,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearest1Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=70&longitude=60")
+                .when().get(API_PATH + "/nearest?latitude=70&longitude=60")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -120,7 +136,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearest2Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=70&longitude=60&payments=true")
+                .when().get(API_PATH + "/nearest?latitude=70&longitude=60&payments=true")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -133,7 +149,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearest3Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=40.1234&longitude=44.4321")
+                .when().get(API_PATH + "/nearest?latitude=40.1234&longitude=44.4321")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -145,7 +161,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearest4Test(String host) {
         AtmResponse actual = getGiven(host)
-                .when().get("/nearest?latitude=40.1234&longitude=44.4321&payments=true")
+                .when().get(API_PATH + "/nearest?latitude=40.1234&longitude=44.4321&payments=true")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse.class);
 
@@ -161,7 +177,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfikSample1Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=55.66&longitude=37.63&alfik=300000")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=55.66&longitude=37.63&alfik=300000")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -173,7 +189,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfikSample2Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=55.66&longitude=37.63&alfik=400000")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=55.66&longitude=37.63&alfik=400000")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -187,7 +203,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik1Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=439501")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=439501")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -199,7 +215,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik2Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=439502")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=439502")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -212,7 +228,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik3Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=2200000")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=64.5&longitude=40.6&alfik=2200000")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -229,7 +245,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik4Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=51&longitude=81&alfik=439501")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=51&longitude=81&alfik=439501")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -241,7 +257,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik5Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=51&longitude=81&alfik=1000000")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=51&longitude=81&alfik=1000000")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
@@ -255,7 +271,7 @@ public class Task1Test extends BaseTest {
     @Test
     public void getNearestWithAfik6Test(String host) {
         List<AtmResponse> actual = Arrays.asList(getGiven(host)
-                .when().get("/nearest-with-alfik?latitude=45&longitude=70&alfik=990000")
+                .when().get(API_PATH + "/nearest-with-alfik?latitude=45&longitude=70&alfik=990000")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(AtmResponse[].class));
 
