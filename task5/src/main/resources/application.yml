@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: promo-addiction
+
+logging:
+  pattern:    console: "%d{DEFAULT} [%10.15t] %5level %-50.-50c{1.} - %msg%n"
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.x5: DEBUG 
+
+server:  port: 8084
+
+app:
+  reference:
+    itemsPath: 'classpath:reference/items.csv'
+    itemGroupsPath: 'classpath:reference/groups.csv'
