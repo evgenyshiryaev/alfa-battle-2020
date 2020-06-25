@@ -1,26 +1,28 @@
-package ru.alfabank.alfabattle2020.task4.entity;
+package ru.alfabank.alfabattle.task4.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlSchemaType;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class PersonWithLoans {
-    private String id;
+public class Person {
     private String docid;
     private String fio;
     @XmlSchemaType(name = "date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
     private BigDecimal salary;
     private String gender;
-    private List<Loan> loans;
+
 }

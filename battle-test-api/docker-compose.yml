@@ -2,7 +2,8 @@ version: "3"
 
 services:
   battle-test-app:
-    image: arpmipg/alfa-battle-private:battle-test-api
+    build:
+      context: .
     volumes:
       - ./log:/log/testapp/
     environment:
@@ -23,13 +24,16 @@ services:
         "taskPorts": {
           "0": 8080,
           "1": 8080,
-          "2": 8081
+          "2": 8081,
+          "4": 8083
         },
         "taskNames": {
           "0": "com.soypita.battle.testcases.ShowcaseTest",
           "1": "com.soypita.battle.testcases.Task1Test",
-          "2": "com.soypita.battle.testcases.Task2Test"
+          "2": "com.soypita.battle.testcases.Task2Test",
+          "4": "com.soypita.battle.testcases.Task4Test"
         }
+      }
     }'
     ports:
       - 8080:8080

@@ -1,7 +1,6 @@
-package ru.alfabank.alfabattle2020.task4.entity;
+package com.soypita.battle.testcases.models.task4;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlSchemaType;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,8 +15,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class Person {
-
-   // private String id;
     private String docid;
     private String fio;
     @XmlSchemaType(name = "date")

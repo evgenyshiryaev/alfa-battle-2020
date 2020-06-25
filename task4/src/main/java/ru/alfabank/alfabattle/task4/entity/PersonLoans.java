@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.task4.entity;
+package ru.alfabank.alfabattle.task4.entity;
 
 import lombok.*;
 

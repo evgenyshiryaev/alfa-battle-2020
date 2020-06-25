@@ -1,4 +1,2 @@
-spring:
-  data:
-    elastic:
-      uri: http://localhost:9200
+server:
+  port: 8083
