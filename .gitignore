@@ -2,6 +2,8 @@
 .settings
 bin
 build
+.idea/
+.DS_Store
 target
 
 .classpath

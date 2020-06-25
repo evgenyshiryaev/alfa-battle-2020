@@ -1,12 +1,9 @@
 package com.soypita.battle.testcases;
 
-import java.io.InputStream;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soypita.battle.testcases.models.task5.FinalPriceReceipt;
 import com.soypita.battle.testcases.models.task5.PromoMatrix;
 import com.soypita.battle.testcases.models.task5.ShoppingCart;
@@ -23,9 +20,6 @@ public class Task5Test extends BaseTest {
 
     private static final String MATRIX_API_PATH = "/promo";
     private static final String RECEIPT_API_PATH = "/receipt";
-
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     // 1
@@ -151,13 +145,13 @@ public class Task5Test extends BaseTest {
 
         FinalPriceReceipt actual = postCart(host, path);
 
-        FinalPriceReceipt expected = readObject(path + RECEIPT_FILE_PATH, FinalPriceReceipt.class);
+        FinalPriceReceipt expected = readObject(ROOT_FOLDER + path + RECEIPT_FILE_PATH, FinalPriceReceipt.class);
         Assertions.assertEquals(expected, actual);
     }
 
 
     private void postMatrix(String host, String path) throws Exception {
-        PromoMatrix matrix = readObject(path + MATRIX_FILE_PATH, PromoMatrix.class);
+        PromoMatrix matrix = readObject(ROOT_FOLDER + path + MATRIX_FILE_PATH, PromoMatrix.class);
         getGiven(host)
                 .body(matrix).post(MATRIX_API_PATH)
                 .then().assertThat().statusCode(HttpStatus.OK.value());
@@ -165,17 +159,11 @@ public class Task5Test extends BaseTest {
 
 
     private FinalPriceReceipt postCart(String host, String path) throws Exception {
-        ShoppingCart cart = readObject(path + CART_FILE_PATH, ShoppingCart.class);
+        ShoppingCart cart = readObject(ROOT_FOLDER + path + CART_FILE_PATH, ShoppingCart.class);
         return getGiven(host)
                 .body(cart).post(RECEIPT_API_PATH)
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(FinalPriceReceipt.class);
-    }
-
-
-    private <T> T readObject(String path, Class<T> clazz) throws Exception {
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(ROOT_FOLDER + path);
-        return objectMapper.readValue(stream, clazz);
     }
 
 }

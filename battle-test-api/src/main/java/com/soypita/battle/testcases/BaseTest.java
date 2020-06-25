@@ -1,7 +1,11 @@
 package com.soypita.battle.testcases;
 
+import java.io.InputStream;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -15,6 +19,9 @@ import io.restassured.specification.RequestSpecification;
 public abstract class BaseTest {
 
     private static final int TIMEOUT = 5_000;
+
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @BeforeAll
@@ -36,6 +43,12 @@ public abstract class BaseTest {
                 .setContentType(ContentType.JSON)
                 .log(LogDetail.ALL)
                 .build();
+    }
+
+
+    protected <T> T readObject(String path, Class<T> clazz) throws Exception {
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(path);
+        return objectMapper.readValue(stream, clazz);
     }
 
 }
