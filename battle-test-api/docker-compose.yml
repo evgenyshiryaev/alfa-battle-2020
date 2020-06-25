@@ -7,30 +7,14 @@ services:
       - ./log:/log/testapp/
     environment:
       SPRING_APPLICATION_JSON: '{
-  "spring": {
-    "data": {
-      "mongodb": {
-        "uri": "mongodb://84.201.128.80:27017,84.201.129.66:27017,84.201.135.153:27017/alfa-battle?replicaSet=rs0",
-        "database": "alfa-battle"
+      "spring": {
+        "data": {
+          "mongodb": {
+            "uri": "mongodb://84.201.128.80:27017,84.201.129.66:27017,84.201.135.153:27017/alfa-battle?replicaSet=rs0",
+            "database": "alfa-battle"
+          }
+        }
       }
-    }
-  },
-  "server": {
-    "port": 8080
-  },
-  "coefficient": 80,
-  "mapping": {
-    "taskPorts": {
-      "0": 8090,
-      "1": 8080,
-      "2": 8081
-    },
-    "taskNames": {
-      "0": "com.soypita.battle.testcases.ShowcaseTest",
-      "1": "com.soypita.battle.testcases.Task1Test",
-      "2": "com.soypita.battle.testcases.Task2Test"
-    }
-  }
-}'
+    }'
     ports:
       - 8080:8080

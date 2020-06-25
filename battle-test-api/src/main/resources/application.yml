@@ -13,10 +13,12 @@ mapping:
   taskPorts:
     1: 8080
     2: 8081
+    4: 8083
     3: 8082
     5: 8084
   taskNames:
     1: com.soypita.battle.testcases.Task1Test
     2: com.soypita.battle.testcases.Task2Test
     3: com.soypita.battle.testcases.Task3Test
+    4: com.soypita.battle.testcases.Task4Test
     5: com.soypita.battle.testcases.Task5Test
