@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.task4.service;
+package ru.alfabank.alfabattle.task4.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
@@ -15,10 +15,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
-import ru.alfabank.alfabattle2020.elasticredits.entity.*;
+import ru.alfabank.alfabattle.task4.entity.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -37,7 +38,7 @@ public class ApplicatioinServises {
             ClientConfiguration.builder().connectedTo("localhost:9200").build();
     RestHighLevelClient client = RestClients.create(clientConfiguration).rest();
 
-    public void setPeople() throws IOException {
+    public ResponseEntity<?> setPeople() throws IOException {
 
         String personListJSON = readUsingScanner("/Users/boxman/git/alfa-battle-2020-elastic/src/main/resources/json/persons.json");
 
@@ -63,8 +64,10 @@ public class ApplicatioinServises {
             } catch (IOException e) {
                 e.printStackTrace();
 
+
             }
         });
+        return ResponseEntity.ok(ResponseStatus.builder().status("OK").build());
     }
 
     public void setLoan() throws IOException {
@@ -88,7 +91,7 @@ public class ApplicatioinServises {
                                         .startObject()
                                         .field("document", result.getDocid())
                                         .field("loan", loan.getLoan())
-                                        .field("amount", loan.getAmount() * 100)
+                                        .field("amount", (Integer)loan.getAmount() * 100)
                                         .field("startdate", loan.getOpenDate().toInstant()
                                                         .atZone(ZoneId.systemDefault())
                                                         .toLocalDate())
@@ -104,6 +107,47 @@ public class ApplicatioinServises {
       }
       );
     }
+
+    public ResponseEntity<?> getPerson(String docId) throws IOException {
+
+        ResponseEntity result = null;
+
+        SearchSourceBuilder builder = new SearchSourceBuilder().postFilter(QueryBuilders.termQuery("docid", docId));
+
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.searchType(SearchType.DFS_QUERY_THEN_FETCH);
+        searchRequest.source(builder);
+
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+
+        List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());
+
+         Person person = new Person();
+         if (searchHits.isEmpty())
+             result = ResponseEntity.badRequest().body(ResponseStatus.builder().status("person not found").build());
+         else
+             result = ResponseEntity.ok(OBJECT_MAPPER.readValue(searchHits.get(0).getSourceAsString(), Person.class));
+
+         return result;
+    }
+
+    public ResponseEntity<?> getLoan(String loanNum) throws IOException {
+
+        ResponseEntity result = null;
+
+        GetRequest getRequest = new GetRequest("loans");
+        getRequest.id(loanNum);
+
+        GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
+
+        if (getResponse.isSourceEmpty())
+            result = ResponseEntity.badRequest().body(ResponseStatus.builder().status("loan not found").build());
+        else
+            result = ResponseEntity.ok(OBJECT_MAPPER.readValue(getResponse.getSourceAsString(), Loan.class));
+
+        return result;
+    }
+
 
     public PersonLoans personLoans(String docId) throws IOException {
 

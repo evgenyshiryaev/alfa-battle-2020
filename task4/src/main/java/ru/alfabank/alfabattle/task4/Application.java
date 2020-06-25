@@ -1,4 +1,4 @@
-package ru.alfabank.alfabattle2020.task4;
+package ru.alfabank.alfabattle.task4;
 
 
 import org.springframework.boot.SpringApplication;
