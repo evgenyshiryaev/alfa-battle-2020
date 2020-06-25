@@ -70,7 +70,7 @@ public class AtmWebSocketClient implements StompSessionHandler {
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         log.info("WebSocket is connected for {}", session);
         this.session = session;
-        session.subscribe("/topic/afik", this);
+        session.subscribe("/topic/alfik", this);
     }
 
 
