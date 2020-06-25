@@ -34,18 +34,18 @@ public class PredictController {
     @ApiResponses({
         @ApiResponse(code = 200, message = "OK", response = BranchesWithPredicting.class),
         @ApiResponse(code = 404, message = "NOT FOUND", response = ErrorResponse.class)})
-    public ResponseEntity<?> getBranchesWithPredicting(@PathVariable Long id, @RequestParam Integer dayOgWeek, @RequestParam Integer hourOfDay) {
+    public ResponseEntity<?> getBranchesWithPredicting(@PathVariable Long id, @RequestParam Integer dayOfWeek, @RequestParam Integer hourOfDay) {
         Branches branches = branchesService.findById(id);
         if (branches == null) {
             return new ResponseEntity<>(new ErrorResponse("branch not found"), HttpStatus.NOT_FOUND);
         }
 
         BranchesWithPredicting branchesWithPredicting = new BranchesWithPredicting(branches);
-        DataTimeForModel dataTimeForModel = new DataTimeForModel(id, dayOgWeek, hourOfDay);
+        DataTimeForModel dataTimeForModel = new DataTimeForModel(id, dayOfWeek, hourOfDay);
 
         branchesWithPredicting.setPredicting(dataAnalystService.getModel().get(dataTimeForModel));
         branchesWithPredicting.setHourOfDay(hourOfDay);
-        branchesWithPredicting.setDayOfWeek(dayOgWeek);
+        branchesWithPredicting.setDayOfWeek(dayOfWeek);
 
         return ResponseEntity.ok(branchesWithPredicting);
     }
