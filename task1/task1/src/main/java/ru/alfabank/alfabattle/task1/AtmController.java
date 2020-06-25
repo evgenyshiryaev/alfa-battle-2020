@@ -16,23 +16,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import ru.alfabank.alfabattle.task1.modelalfa.ATMDetails;
 import ru.alfabank.alfabattle.task1.modelalfa.JSONResponseBankATMDetails;
 import ru.alfabank.alfabattle.task1.modeltask.AtmResponse;
 import ru.alfabank.alfabattle.task1.modeltask.AtmResponseConverter;
+import ru.alfabank.alfabattle.task1.modeltask.ErrorResponse;
 
 
 @Slf4j
-@RestController("/")
+@RestController
+@RequestMapping("/atms")
 public class AtmController {
 
     private static final String API_ROOT = "https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service";
@@ -56,11 +62,14 @@ public class AtmController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AtmResponse> getById(@PathVariable("id") int id) {
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK", response = AtmResponse.class),
+        @ApiResponse(code = 404, message = "NOT FOUND", response = ErrorResponse.class)})
+    public ResponseEntity<?> getById(@PathVariable("id") int id) {
         ATMDetails atm = atmService.getById(id);
         return atm != null
                 ? ResponseEntity.ok(converter.convert(atm))
-                : ResponseEntity.notFound().build();
+                : new ResponseEntity<>(new ErrorResponse("atm not found"), HttpStatus.NOT_FOUND);
     }
 
 

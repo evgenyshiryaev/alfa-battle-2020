@@ -46,7 +46,7 @@ public class AtmWebsocketController {
 
 
     @MessageMapping("/")
-    @SendTo("/topic/afik")
+    @SendTo("/topic/alfik")
     public WebSocketResponse greeting(WebSocketRequest request) throws Exception {
         log.info("Got {}", request);
         return data.get(request.getDeviceId());

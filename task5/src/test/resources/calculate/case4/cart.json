@@ -1,0 +1,29 @@
+{
+  "shopId" : 10,
+  "loyaltyCard" : true,
+  "positions" : [ {
+    "itemId" : "3478296",
+    "quantity" : 1
+  }, {
+    "itemId" : "3501221",
+    "quantity" : 2
+  }, {
+    "itemId" : "39774",
+    "quantity" : 1
+  }, {
+    "itemId" : "78004858",
+    "quantity" : 1
+  }, {
+    "itemId" : "3274609",
+    "quantity" : 2
+  }, {
+    "itemId" : "3688443",
+    "quantity" : 5
+  }, {
+    "itemId" : "3407647",
+    "quantity" : 1
+  }, {
+    "itemId" : "3621435",
+    "quantity" : 2
+  } ]
+}

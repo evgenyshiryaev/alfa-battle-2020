@@ -90,7 +90,7 @@ public class Task2Test extends BaseTest {
                 .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
                 .extract().body().asString();
 
-        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE), "Unexpected error response body");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class Task2Test extends BaseTest {
                 .then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
                 .extract().body().asString();
 
-        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE), "Unexpected error response body");
     }
 
     @Test
@@ -149,7 +149,7 @@ public class Task2Test extends BaseTest {
     }
 
     @Test
-    public void shouldReturnEmptyListForGetUserPaymentTemplateByUnexpectedUserID(String host) {
+    public void shouldReturnNotFoundCodeForGetUserPaymentTemplateByUnexpectedUserID(String host) {
         log.info("Run shouldReturnEmptyListForGetUserPaymentTemplateByUnexpectedUserID test for {}", host);
 
         // when
@@ -161,6 +161,6 @@ public class Task2Test extends BaseTest {
         log.info("Request perform with response {}", resp);
 
         // then
-        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE));
+        assertTrue(resp.contains(USER_NOT_FOUND_RESPONSE), "Unexpected error response body");
     }
 }

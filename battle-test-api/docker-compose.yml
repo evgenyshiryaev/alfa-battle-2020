@@ -2,7 +2,7 @@ version: "3"
 
 services:
   battle-test-app:
-    image: arpmipg/alfa-battle-private:battle-test-api
+    image: arpmipg/alfa-battle-private:battle-test-api_0.1.1
     volumes:
       - ./log:/log/testapp/
     environment:
@@ -36,11 +36,3 @@ services:
     }'
     ports:
       - 8080:8080
-    depends_on:
-      - db
-  db:
-    image: mongo
-    volumes:
-      - ./database:/data/db
-    ports:
-      - 27017:27017
