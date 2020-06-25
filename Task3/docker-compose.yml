@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  alfa-battle-task3:
+    build: .
+    ports:
+      - 8082:8082
