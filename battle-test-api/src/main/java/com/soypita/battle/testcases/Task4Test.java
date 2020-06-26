@@ -2,7 +2,6 @@ package com.soypita.battle.testcases;
 
 import com.soypita.battle.testcases.models.task4.*;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
