@@ -51,13 +51,14 @@ public class ApplicatioinServises {
     @SneakyThrows
     private void init() {
         try {
-            var createIndexRequest =
+            var createPersonIndexRequest =
                     new CreateIndexRequest("persons");
 
-            var createIndexRequest =
+            var createLoanIndexRequest =
                     new CreateIndexRequest("loans");
 
-            client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
+            client.indices().create(createPersonIndexRequest, RequestOptions.DEFAULT);
+            client.indices().create(createLoanIndexRequest, RequestOptions.DEFAULT);
         } catch (Exception er) {
             log.error("index exists");
         }
