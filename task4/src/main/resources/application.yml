@@ -1,2 +1,14 @@
 server:
   port: 8083
+
+elastic:
+  host: "192.168.1.24:9200"
+
+spring:
+  main:
+    allow-bean-definition-overriding:           true
+
+management:
+  endpoints:
+    web:
+      base-path: /admin

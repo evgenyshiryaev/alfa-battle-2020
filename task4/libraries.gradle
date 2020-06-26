@@ -4,7 +4,7 @@ ext {
             spring        : [
                     'org.springframework.boot:spring-boot-starter-web',
                     'org.springframework.boot:spring-boot-starter-data-elasticsearch',
-                    'org.springframework.data:spring-data-elasticsearch:3.2.0.M1'
+                    'org.springframework.data:spring-data-elasticsearch'
 
             ],
             testing       : [
@@ -21,7 +21,7 @@ ext {
                     "org.elasticsearch:elasticsearch:${elasticVersion}",
                     "org.elasticsearch.client:transport:${elasticVersion}",
                     "org.elasticsearch.client:elasticsearch-rest-client:${elasticVersion}",
-                    "com.alibaba:fastjson:1.1.25"
+//                    "com.alibaba:fastjson:1.1.25"
 
 
             ],

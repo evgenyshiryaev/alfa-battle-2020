@@ -1,0 +1,19 @@
+---
+version: '3'
+
+services:
+  task4-app:
+    build:
+      context: .
+    environment:
+      SPRING_APPLICATION_JSON:
+        '{
+          "server": {
+            "port": 8083
+          },
+          "elastic": {
+            "host": "192.168.1.24:9200"
+          }
+         }'
+    ports:
+      - 8083:8083

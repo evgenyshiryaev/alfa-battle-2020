@@ -3,25 +3,19 @@ package ru.alfabank.alfabattle.task4.controller;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ru.alfabank.alfabattle.task4.entity.ResponseStatus;
 import ru.alfabank.alfabattle.task4.service.ApplicatioinServises;
 
 
 @RestController
+@RequestMapping("/loans")
 public class ApplicationController {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    ApplicatioinServises servises = new ApplicatioinServises();
-
-    @GetMapping(path = "/admin/health")
-    public ResponseEntity<?> health() throws IOException {
-        return ResponseEntity.ok(ResponseStatus.builder().status("UP").build());
-    }
+    @Autowired
+    ApplicatioinServises servises;
 
     @PutMapping(path = "/loadPersons")
     public ResponseEntity<?> loadPerson() throws IOException {
@@ -30,7 +24,7 @@ public class ApplicationController {
     }
 
     @PutMapping(path = "/loadLoans")
-    public ResponseEntity<?> loasdLoan() throws IOException {
+    public ResponseEntity<?> loadLoan() throws IOException {
 
         servises.setLoan();
         return ResponseEntity.ok(ResponseStatus.builder().status("OK").build());
@@ -42,7 +36,7 @@ public class ApplicationController {
     }
 
     @GetMapping(path = "/getLoan/{loan}")
-    public ResponseEntity<?> руеLoan(@PathVariable String loan) throws IOException {
+    public ResponseEntity<?> getLoan(@PathVariable String loan) throws IOException {
         return servises.getLoan(loan);
     }
 
@@ -59,11 +53,9 @@ public class ApplicationController {
         return ResponseEntity.ok(servises.loansClosed());
     }
 
-    @GetMapping(path = "/LoansSortByPersonBirthday")
+    @GetMapping(path = "/loansSortByPersonBirthday")
     public ResponseEntity<?> loansSortByPersonBirthday() throws IOException {
 
         return ResponseEntity.ok(servises.loansSortByPersonBirthday());
     }
-
-
 }
