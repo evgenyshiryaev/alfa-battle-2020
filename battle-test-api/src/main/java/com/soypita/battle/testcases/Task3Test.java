@@ -10,8 +10,8 @@ import com.soypita.battle.testcases.models.task3.Branches;
 import com.soypita.battle.testcases.models.task3.ErrorResponse;
 
 
-// Total tests = TODO
-// Points per test = TODO
+// Total tests = 20
+// Points per test = 4
 public class Task3Test extends BaseTest {
 
     private static final String ROOT_FOLDER = "task3";
@@ -20,7 +20,7 @@ public class Task3Test extends BaseTest {
 
 
     // 1
-    // tests = 4, points = TODO
+    // tests = 4, points = 16
 
     @Test
     public void getByIdSampleFoundTest(String host) throws Exception {
@@ -71,6 +71,7 @@ public class Task3Test extends BaseTest {
 
 
     // 2
+    // tests = 6, points = 24
 
     @Test
     public void getNearBranch1Test(String host) throws Exception {
@@ -141,6 +142,7 @@ public class Task3Test extends BaseTest {
 
 
     // 3
+    // tests = 10, points = 40
 
     @Test
     public void getPredictingForBranchNotFoundTest(String host) throws Exception {
