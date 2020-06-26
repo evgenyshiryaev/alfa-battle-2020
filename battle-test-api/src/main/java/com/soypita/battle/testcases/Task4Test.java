@@ -33,14 +33,14 @@ public class Task4Test extends BaseTest {
     public void successfullyLoadPerson(String host) throws InterruptedException {
         log.info("Run successfullyLoadPerson test for {}", host);
         getGiven(host).
-                when().put("/loadPersons")
+                when().put("/loans/loadPersons")
                 .then().assertThat().statusCode(HttpStatus.OK.value());
 
         Thread.sleep(1000 * 30);
 
         log.info("Request perform with response /getPerson/855406656");
         Person person = getGiven(host).
-                when().get("/getPerson/855406656")
+                when().get("/loans/getPerson/855406656")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(Person.class);
 
@@ -58,14 +58,14 @@ public class Task4Test extends BaseTest {
     public void successfullyLoadLoans(String host) throws InterruptedException {
         log.info("Run successfullyLoadLoans test for {}", host);
         getGiven(host).
-                when().put("/loadLoans")
+                when().put("/loans/loadLoans")
                 .then().assertThat().statusCode(HttpStatus.OK.value());
 
         Thread.sleep(1000 * 30);
 
         log.info("Request perform with response /getLoan/692826");
         Loan loan = getGiven(host).
-                when().get("/getLoan/692826")
+                when().get("/loans/getLoan/692826")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(Loan.class);
 
@@ -85,7 +85,7 @@ public class Task4Test extends BaseTest {
         log.info("Run successfullyClosedLoans test for {}", host);
 
         List<Loan> loanList = getGiven(host).
-                when().get("/creditClosed")
+                when().get("/loans/creditClosed")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().body().jsonPath().getList(".", Loan.class);
 
@@ -100,7 +100,7 @@ public class Task4Test extends BaseTest {
         log.info("Run successfullyCreditHistory test for {}", host);
 
         PersonLoans loans = getGiven(host).
-                when().get("/creditHistory/737767072/")
+                when().get("/loans/creditHistory/737767072/")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().as(PersonLoans.class);
 
@@ -120,7 +120,7 @@ public class Task4Test extends BaseTest {
         log.info("Run personNotFound test for {}", host);
 
         ResponseStatus status = getGiven(host).
-                when().get("/getPerson/8554066563")
+                when().get("/loans/getPerson/8554066563")
                 .then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ResponseStatus.class);
         assertNotNull(status, "Expect not null response");
@@ -133,7 +133,7 @@ public class Task4Test extends BaseTest {
         log.info("Run loanNotFound test for {}", host);
 
         ResponseStatus status = getGiven(host).
-                when().get("/getLoan/2312")
+                when().get("/loans/getLoan/2312")
                 .then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ResponseStatus.class);
         assertNotNull(status, "Expect not null response");
@@ -146,7 +146,7 @@ public class Task4Test extends BaseTest {
         log.info("Run successfullyLoansSortByPersonBirthday test for {}", host);
 
         List<PersonWithLoans> personList = getGiven(host).
-                when().get("/LoansSortByPersonBirthday")
+                when().get("/loans/loansSortByPersonBirthday")
                 .then().assertThat().statusCode(HttpStatus.OK.value())
                 .extract().body().jsonPath().getList(".", PersonWithLoans.class);
 

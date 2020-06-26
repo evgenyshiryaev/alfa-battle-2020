@@ -32,10 +32,10 @@ public class UsersController {
         usersService.addUsers(request);
     }
 
-    @DeleteMapping
-    public void deleteAllUsers() {
-        usersService.deleteAllUsers();
-    }
+//    @DeleteMapping
+//    public void deleteAllUsers() {
+//        usersService.deleteAllUsers();
+//    }
 
     @DeleteMapping("/{loginId}")
     public void deleteUser(@NotNull @PathVariable String loginId) {

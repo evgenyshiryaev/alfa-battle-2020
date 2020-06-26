@@ -1,5 +1,6 @@
 package com.soypita.battle.testcases.models.task3;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 public class BranchesWithPredicting extends Branches {

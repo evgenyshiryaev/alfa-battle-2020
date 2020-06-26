@@ -102,13 +102,11 @@ public class UsersControllerTest extends BattleTestApplicationSpec {
         var res = contestUsersRepository.findByLoginId(BASE_LOGIN_ID);
         assertTrue(res.isEmpty());
     }
-
-    @Test
-    public void successfullyDeleteAllUsers() throws Exception {
-        mockMvc.perform(delete("/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk());
-    }
-
-
+//
+//    @Test
+//    public void successfullyDeleteAllUsers() throws Exception {
+//        mockMvc.perform(delete("/users")
+//                .contentType(MediaType.APPLICATION_JSON_VALUE))
+//                .andExpect(status().isOk());
+//    }
 }

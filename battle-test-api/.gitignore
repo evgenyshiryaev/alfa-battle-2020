@@ -1,4 +1,5 @@
 #### GENERATED DO NOT EDIT USE gitignore{} in gradle config instead ###
+database/
 *.class
 *.log
 *.ctxt
