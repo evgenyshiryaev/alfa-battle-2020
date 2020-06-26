@@ -54,15 +54,19 @@ public class ApplicatioinServises {
             var createPersonIndexRequest =
                     new CreateIndexRequest("persons");
 
-            var createLoanIndexRequest =
-                    new CreateIndexRequest("loans");
-
             client.indices().create(createPersonIndexRequest, RequestOptions.DEFAULT);
-            client.indices().create(createLoanIndexRequest, RequestOptions.DEFAULT);
         } catch (Exception er) {
             log.error("index exists");
         }
 
+        try {
+            var createLoanIndexRequest =
+                    new CreateIndexRequest("loans");
+            client.indices().create(createLoanIndexRequest, RequestOptions.DEFAULT);
+
+        } catch (Exception er) {
+            log.error("index exists");
+        }
     }
 
 
