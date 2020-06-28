@@ -1,7 +1,6 @@
 package com.alfabattle.task2.services;
 
 import com.alfabattle.task2.converters.UserPaymentAnalyticConverter;
-import com.alfabattle.task2.dto.PaymentCategoryInfo;
 import com.alfabattle.task2.dto.UserPaymentAnalytic;
 import com.alfabattle.task2.entities.PaymentAnalyticsResult;
 import com.alfabattle.task2.entities.UserNotFoundException;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

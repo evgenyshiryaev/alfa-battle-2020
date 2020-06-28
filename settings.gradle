@@ -1,0 +1,9 @@
+rootProject.name = 'alfa-battle-2020'
+
+include 'battle-test-api'
+include 'task1'
+include 'task1-websocket'
+include 'task2'
+include 'task3'
+include 'task4'
+include 'task5'

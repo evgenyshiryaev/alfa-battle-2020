@@ -1,0 +1,39 @@
+plugins {
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version '2.3.0.RELEASE' apply false
+}
+
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'ru.alfabank'
+    version = '1.0.0'
+    sourceCompatibility = '11'
+
+    dependencies {
+        constraints {
+            implementation 'io.springfox:springfox-swagger2:2.10.5'
+            implementation 'io.springfox:springfox-swagger-ui:2.10.5'
+
+            implementation 'org.mapstruct:mapstruct:1.3.1.Final'
+            annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+            testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+    }
+}

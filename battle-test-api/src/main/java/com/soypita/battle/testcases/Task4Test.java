@@ -76,9 +76,9 @@ public class Task4Test extends BaseTest {
         assertEquals("2017-01-16", dateFormat.format(loan.getStartdate()), "Unexpected startdate");
         assertEquals("027665876", loan.getDocument(), "Unexpected document");
         assertTrue(new BigDecimal("448900").compareTo(loan.getAmount()) == 0, "Unexpected amount");
-        assertTrue(new Integer("48").compareTo(loan.getPeriod()) == 0, "Unexpected period");
-
+        assertTrue(loan.getPeriod() == 48, "Unexpected period");
     }
+
 
     @Test
     public void successfullyClosedLoans(String host) throws InterruptedException {
@@ -95,6 +95,7 @@ public class Task4Test extends BaseTest {
         assertEquals(161, loanList.size(), "Response loans list size doesnt' match");
     }
 
+
     @Test
     public void successfullyCreditHistory(String host) throws InterruptedException {
         log.info("Run successfullyCreditHistory test for {}", host);
@@ -107,13 +108,14 @@ public class Task4Test extends BaseTest {
         log.info("Request perform with response {}", loans);
 
         assertNotNull(loans, "Expect not null response");
-        assertTrue(new Integer("4").compareTo(loans.getCountLoan()) == 0, "Response creditHistory countLoan size doesnt' match");
+        assertTrue(loans.getCountLoan() == 4, "Response creditHistory countLoan size doesnt' match");
         assertTrue(new BigDecimal("1058400.0").compareTo(loans.getSumAmountLoans()) == 0, "Response creditHistory sumAmountLoans size doesnt' match");
         assertEquals(4, loans.getLoans().size(), "Response creditHistory loans size doesnt' match");
         loans.getLoans().stream().forEach(
                 loan -> assertTrue(VALID_LOANS_SET.contains(loan.getLoan()), "Unexpected loan in loans block in creditHistory response")
         );
     }
+
 
     @Test
     public void personNotFound(String host) throws InterruptedException {

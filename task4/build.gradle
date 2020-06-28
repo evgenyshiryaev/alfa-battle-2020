@@ -1,35 +1,15 @@
-plugins {
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'java'
-}
-
-group = 'com.alfabattle'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-apply from: "${project.projectDir}/libraries.gradle"
-
-repositories {
-    mavenCentral()
-}
+apply plugin: 'org.springframework.boot'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.springframework.data:spring-data-elasticsearch'
-    implementation 'org.projectlombok:lombok'
+
+    implementation 'io.springfox:springfox-swagger2'
+    implementation 'io.springfox:springfox-swagger-ui'
+
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-
-    annotationProcessor 'org.projectlombok:lombok'
-
-    implementation libpacks.utils
-    testImplementation libpacks.testing
 }
-
 
 test {
     useJUnitPlatform()

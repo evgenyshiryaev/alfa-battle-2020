@@ -3,11 +3,9 @@ package ru.alfabank.alfabattle.task4.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.elasticsearch.search.DocValueFormat;
 
 import javax.xml.bind.annotation.XmlSchemaType;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Getter

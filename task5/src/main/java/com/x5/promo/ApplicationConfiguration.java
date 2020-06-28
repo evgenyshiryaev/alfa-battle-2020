@@ -18,7 +18,8 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+
 
 @Configuration
 @EnableConfigurationProperties(ApplicationConfiguration.ReferenceDataProperties.class)
@@ -34,7 +35,8 @@ public class ApplicationConfiguration {
     Resource itemGroupsPath;
   }
 
-  @EnableSwagger2
+
+  @EnableSwagger2WebMvc
   @Configuration
   public static class SwaggerConfiguration {
     @Bean
@@ -60,4 +62,5 @@ public class ApplicationConfiguration {
         List.of());
     }
   }
+
 }

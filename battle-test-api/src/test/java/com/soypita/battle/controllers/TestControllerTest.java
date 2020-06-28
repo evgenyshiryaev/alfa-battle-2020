@@ -5,6 +5,7 @@ import com.soypita.battle.dto.RunTestRequest;
 import com.soypita.battle.entities.ContestUser;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
@@ -31,6 +32,7 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     }
 
     @Test
+    @Ignore
     public void successfullyPerformTestCase() throws Exception {
         // given
         RunTestRequest req = new RunTestRequest();

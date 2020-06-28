@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.alfa.task3.entity.Branches;
-import ru.alfa.task3.entity.QueueLog;
 import ru.alfa.task3.repositories.BranchesRepository;
 
 import java.util.List;
+
 
 @Service
 public class BranchesService {
@@ -26,4 +26,5 @@ public class BranchesService {
     public List<Branches> findAll(){
         return branchesRepository.findAll();
     }
+
 }

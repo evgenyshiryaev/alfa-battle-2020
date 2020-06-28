@@ -1,13 +1,10 @@
 package com.alfabattle.task2;
 
 import com.alfabattle.task2.config.PaymentAnalyticsProperties;
-import com.alfabattle.task2.entities.PaymentAnalyticsResult;
 import com.alfabattle.task2.entities.RawPaymentInfo;
 import com.alfabattle.task2.repositories.PaymentAnalyticRepository;
 import com.alfabattle.task2.repositories.UserTemplateRepository;
-import com.alfabattle.task2.stream.PaymentInfoKStreamBuilder;
 import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.*;
 import org.junit.*;
@@ -21,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.Properties;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
