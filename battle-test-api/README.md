@@ -1,35 +1,20 @@
-##Alfa Battle Api
+# Alfa Battle Auto-test API
+- Gamers management
+- Tests runner
+- Results viewing
 
-
-Api запускает автоматизированные тест-кейсы для задач контеста.
-
-##Описание
-
-Api предоставляет интерфейс для запуска тест кейсов и получения результатов по пользователям.
-Сущность пользователя и его результатов хранится в MongoDB.
-
-##Запуск
-Для запуска
+## How to run
 ```
 ./gradlew clean build
-
 docker-compose build
-
 docker-compose up -d
 ```
+Default port is 8080.
 
-По умолчанию сервис слушает порт 8080.
+## Swagger
 
-##Интерфейс
+Swagger UI is available on http://127.0.0.1:8080/swagger-ui.html
 
-Swagger описание по-умолчанию доступно по http://localhost:8080/swagger-ui.html
-
-##Добавление новых тест кейсов
-
-Для добавления новых тест кейсов следует создать в директории testcases новый класс, который будет содержать JUnit тесты
-функциональности задачи.
-
-Далее в файл конфигурации следует добавить маппинг taskId на полное имя класса теста и маппинг taskId на дефолтный порт
-тестируемой Api.
-
-Для примера смотри **FirstTest** класс и его конфигурацию в application.yml
+## How to add tests
+- Add new test class under com.soypita.battle.testcases
+- Map test ID, test class and port in application.yml
