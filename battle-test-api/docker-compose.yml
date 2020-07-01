@@ -14,28 +14,6 @@ services:
             "database": "alfa-battle"
           }
         }
-      },
-      "server": {
-        "port": 8080
-      },
-      "coefficient": 80,
-      "mapping": {
-        "taskPorts": {
-          "0": 8080,
-          "1": 8080,
-          "2": 8081,
-          "3": 8082
-          "4": 8083,
-          "5": 8084
-        },
-        "taskNames": {
-          "0": "com.soypita.battle.testcases.ShowcaseTest",
-          "1": "com.soypita.battle.testcases.Task1Test",
-          "2": "com.soypita.battle.testcases.Task2Test",
-          "3": "com.soypita.battle.testcases.Task3Test",
-          "4": "com.soypita.battle.testcases.Task4Test",
-          "5": "com.soypita.battle.testcases.Task5Test"
-        }
       }
     }'
     ports:

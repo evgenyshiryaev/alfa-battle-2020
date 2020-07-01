@@ -5,7 +5,6 @@ import com.soypita.battle.dto.RunTestRequest;
 import com.soypita.battle.entities.ContestUser;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
