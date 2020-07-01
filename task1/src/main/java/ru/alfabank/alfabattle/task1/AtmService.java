@@ -20,17 +20,12 @@ public class AtmService {
 
 
     private final Map<Integer, ATMDetails> atmById = new HashMap<>();
-    //private final Map<Integer, ATMStatus> atmStatusById = new HashMap<>();
 
 
     public void setAtms(List<ATMDetails> atms) {
         atms.forEach(atm -> atmById.put(atm.getDeviceId(), atm));
         //storeWebSocketResponseToFile(atms);
     }
-
-    //public void setAtmStatuses(List<ATMStatus> atmStatuses) {
-    //    atmStatuses.forEach(atmStatus -> atmStatusById.put(atmStatus.getDeviceId(), atmStatus));
-    //}
 
 
     public ATMDetails getById(int id) {

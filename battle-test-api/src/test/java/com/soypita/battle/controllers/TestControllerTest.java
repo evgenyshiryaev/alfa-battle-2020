@@ -32,7 +32,6 @@ public class TestControllerTest extends BattleTestApplicationSpec {
     }
 
     @Test
-    @Ignore
     public void successfullyPerformTestCase() throws Exception {
         // given
         RunTestRequest req = new RunTestRequest();

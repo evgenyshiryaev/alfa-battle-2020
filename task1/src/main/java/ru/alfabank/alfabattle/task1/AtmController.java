@@ -43,10 +43,10 @@ public class AtmController {
 
     private static final String API_ROOT = "https://apiws.alfabank.ru/alfabank/alfadevportal/atm-service";
     private static final String ATMS_API_PATH = API_ROOT + "/atms";
-    //private static final String ATMS_STATUS_API_PATH = API_ROOT + "/atms/status";
 
-    private static final String CLIENT_ID = "d79fc084-69ec-4d8e-9dfd-daf8b5d04ef9";
 
+    @Autowired
+    private Task1Properties properties;
 
     @Autowired
     private AtmService atmService;
@@ -105,12 +105,10 @@ public class AtmController {
 
         SSLContext sslContext = SSLContexts.custom()
                 .loadKeyMaterial(keyStore, password)
-//                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                 .build();
 
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLContext(sslContext)
-//                .setSSLHostnameVerifier(new NoopHostnameVerifier())
                 .build();
 
         var requestFactory = new HttpComponentsClientHttpRequestFactory();
@@ -120,10 +118,10 @@ public class AtmController {
     }
 
 
-    private static HttpEntity<?> getHttpEntity() {
+    private HttpEntity<?> getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("accept", "application/json");
-        headers.add("x-ibm-client-id", CLIENT_ID);
+        headers.add("x-ibm-client-id", properties.getClientId());
 
         return new HttpEntity<>(headers);
     }
@@ -138,16 +136,10 @@ public class AtmController {
         ResponseEntity<JSONResponseBankATMDetails> atmsResponse = restTemplate.exchange(
                 URI.create(ATMS_API_PATH),
                 HttpMethod.GET, httpEntity, JSONResponseBankATMDetails.class);
-        //ResponseEntity<JSONResponseBankATMStatus> atmsStatusResponse = restTemplate.exchange(
-        //        URI.create(ATMS_STATUS_API_PATH),
-        //        HttpMethod.GET, httpEntity, JSONResponseBankATMStatus.class);
         log.info("Data is loaded");
 
         List<ATMDetails> atms = atmsResponse.getBody().getData().getAtms();
         atmService.setAtms(atms);
-
-        //List<ATMStatus> atmStatuses = atmsStatusResponse.getBody().getData().getAtms();
-        //atmService.setAtmStatuses(atmStatuses);
 
         log.info("ATMs are inited");
     }

@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,14 @@ import java.util.stream.Collectors;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TestRunnerService {
-    private final Launcher launcher;
-    private final SummaryGeneratingListener listener;
+
+    private static final String HOST_TEST_PARAM = "test_host";
+
     private final TasksProperties properties;
     private final TaskFailureConverter taskFailureConverter;
     private final UsersService usersService;
@@ -33,7 +36,6 @@ public class TestRunnerService {
     @Value("${coefficient}")
     private Float totalCoeff;
 
-    private static final String HOST_TEST_PARAM = "test_host";
 
     @SneakyThrows
     public TestResultResponse executeTest(RunTestRequest req) {
@@ -42,28 +44,7 @@ public class TestRunnerService {
 
         log.info("Run test {} for user {} ", taskId, loginId);
 
-        var testClassName = properties.getTaskNames().get(taskId);
-
-        if (Strings.isBlank(testClassName)) {
-            log.error("Test case for taskID {} doesn't exist", taskId);
-            throw new TaskNotFoundException(String.format("task with id %s not found", taskId));
-        }
-
-        var userHost = usersService.getUserHost(loginId);
-
-        var testUrl = String.format("http://%s:%s", userHost, properties.getTaskPorts().get(req.getTaskId()));
-
-        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
-                .request()
-                .selectors(selectClass(testClassName))
-                .configurationParameter(HOST_TEST_PARAM, testUrl)
-                .build();
-
-        launcher.execute(request);
-
-        var summary = listener.getSummary();
-
-
+        var summary = getExecutionSummary(taskId, loginId);
         var result = (totalCoeff / summary.getTestsFoundCount()) * summary.getTestsSucceededCount();
 
         log.info("Finish test {} for user {} with result {} ", taskId, loginId, result);
@@ -86,4 +67,31 @@ public class TestRunnerService {
                 .failuresList(taskFailureList)
                 .build();
     }
+
+
+    private TestExecutionSummary getExecutionSummary(int taskId, String loginId) {
+        var testClassName = properties.getTaskNames().get(taskId);
+
+        if (Strings.isBlank(testClassName)) {
+            log.error("Test case for taskID {} doesn't exist", taskId);
+            throw new TaskNotFoundException(String.format("task with id %s not found", taskId));
+        }
+
+        var userHost = usersService.getUserHost(loginId);
+        var testUrl = String.format("http://%s:%s", userHost, properties.getTaskPorts().get(taskId));
+
+        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
+                .request()
+                .selectors(selectClass(testClassName))
+                .configurationParameter(HOST_TEST_PARAM, testUrl)
+                .build();
+
+        var launcher = LauncherFactory.create();
+        var listener = new SummaryGeneratingListener();
+        launcher.registerTestExecutionListeners(listener);
+
+        launcher.execute(request);
+        return listener.getSummary();
+    }
+
 }

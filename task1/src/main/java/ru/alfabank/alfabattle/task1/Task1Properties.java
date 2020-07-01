@@ -11,6 +11,8 @@ import lombok.Data;
 @ConfigurationProperties
 public class Task1Properties {
 
+    private String clientId;
+
     private String webSocketPath = "ws://127.0.0.1:8100";
 
 }

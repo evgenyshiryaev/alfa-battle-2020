@@ -1,4 +1,5 @@
 server:
   port: 8080
 
+clientId: "YOUR_CLINET_ID"
 webSocketPath: "ws://127.0.0.1:8100"

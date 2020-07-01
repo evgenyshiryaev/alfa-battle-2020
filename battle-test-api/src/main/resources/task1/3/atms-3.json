@@ -1,0 +1,5 @@
+[{"deviceId":504265,"latitude":"64.52422","longitude":"40.601758","city":"Архангельск","location":"Ленинградский пр-кт, 38","payments":true},
+{"deviceId":352074,"latitude":"64.53249","longitude":"40.602063","city":"Архангельск","location":"проспект Московский, д. 35","payments":false},
+{"deviceId":501212,"latitude":"64.5437283","longitude":"40.5678794","city":"Архангельск","location":"ул. Тимме, 4","payments":true},
+{"deviceId":755070,"latitude":"64.536527","longitude":"40.557936","city":"Архангельск","location":"пр-кт Обводный канал, 9, корп. 3","payments":false},
+{"deviceId":221558,"latitude":"64.546803","longitude":"40.557164","city":"Архангельск","location":"Воскресенская ул., 108","payments":true}]
